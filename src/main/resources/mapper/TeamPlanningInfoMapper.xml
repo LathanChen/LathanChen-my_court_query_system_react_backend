@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.TeamPlanningInfoMapper">
+	<resultMap id="TeamPlanningInfoResultMap" type="com.example.demo.entity.TeamPlanningInfo">
+	    <!-- 定义结果映射 -->
+	    <!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样-->
+	    <!--column和property必须都写？-->
+	    <id column="planningInfoId" property="planningInfoId" jdbcType="INTEGER" />
+	    <result column="teamId"  property="teamId" jdbcType="INTEGER" />
+	    <result column="teamItemId"  property="teamItemId" jdbcType="INTEGER" />
+	    <result column="planningDate"  property="planningDate" jdbcType="DATE" />
+	    <result column="planningTime"  property="planningTime" jdbcType="VARCHAR" />
+	    <result column="updateTime"  property="updateTime" jdbcType="TIMESTAMP" />
+	    <association property="teamInfo" javaType="com.example.demo.entity.TeamInfo">
+	    	<id column="teamId" property='teamId' jdbcType="INTEGER" />
+	    	<result column="teamName" property='teamName' jdbcType="VARCHAR" />
+	    </association>
+	    <association property="courtInfo" javaType="com.example.demo.entity.CourtInfo">
+	    	<id column="courtId" property='courtId' jdbcType="INTEGER" />
+	    	<result column="courtName" property='courtName' jdbcType="VARCHAR" />
+	    </association>
+  	</resultMap>
+    <select id="getTeamPlanningInfo" resultMap="TeamPlanningInfoResultMap">
+        SELECT * FROM teamplanninginfo
+        JOIN teaminfo ON teamplanninginfo.teamId = teaminfo.teamId
+        JOIN courtinfo ON teamplanninginfo.courtId = courtinfo.courtId
+        <where>
+	        <if test="planningDate !=0">
+	                 AND planningDate = #{planningDate}
+	        </if>
+	        <if test="teamItemId != 0 ">
+	                 AND teamItemId = #{teamItemId}
+	        </if>
+        </where>
+    </select>
+</mapper>

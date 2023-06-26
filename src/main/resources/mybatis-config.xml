@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--<configuration> 元素的内容必须符合指定的格式，具体要求是应该按照特定的顺序包含以下子元素：<properties>, <settings>, <typeAliases>, <typeHandlers>, <objectFactory>,
+ <objectWrapperFactory>, <reflectorFactory>, <plugins>, <environments>, <databaseIdProvider>, <mappers>。
+ 也就是说，<configuration> 元素的子元素只能是这些，且必须按照指定的顺序排列。-->
+<!-- 引入pagehelper完成分页功能 -->
+  <plugins>
+    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+    </plugin>
+  </plugins>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC" />
+      <dataSource type="POOLED">
+        <property name="driver" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/courtquery" />
+        <property name="username" value="root" />
+        <property name="password" value="shutiaobendan11" />
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+        <mapper resource="mapper/CourtInfoMapper.xml"  />
+        <mapper resource="mapper/TeamPlanningInfoMapper.xml"  />
+  </mappers>
+</configuration>

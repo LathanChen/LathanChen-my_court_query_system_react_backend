@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.CourtInfoMapper">
+	<resultMap id="CourtOpenInfoResultMap" type="com.example.demo.entity.CourtOpenInfo">
+	    <!-- 定义结果映射 -->
+	    <!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样-->
+	    <!--column和property必须都写？-->
+	    <id column="courtOpenInfoId" property="courtOpenInfoId" jdbcType="INTEGER" />
+	    <result column="courtOpenItemId" property="courtOpenItemId" jdbcType="INTEGER" />
+	    <result column="courtOpenCourtId" property="courtOpenCourtId" jdbcType="INTEGER" />
+	    <result column="courtOpenWeekday" property="courtOpenWeekday" jdbcType="INTEGER" />
+	    <result column="courtOpenWeekNum" property="courtOpenWeekNum" jdbcType="INTEGER" />
+	    <result column="courtOpenTimeZone" property="courtOpenTimeZone" jdbcType="INTEGER" />
+	    <result column="courtOpenTime" property="courtOpenTime" jdbcType="VARCHAR" />
+	    <result column="courtOpenUpdateTime" property="courtOpenUpdateTime" jdbcType="TIMESTAMP" />
+	    <result column="courtOpenNote" property="courtOpenNote" jdbcType="VARCHAR" />
+	    <!--association代表一对一的关系，这里CourtOpenInfo使用了成员属性ItemInfo和CourtInfo（两者都是对象）
+	    来存储使用SQL的JOIN ON语法查询到的另外两张表的数据，需要分别设置这两张表的字段和这两个对象的对应关系-->
+	    <association property="itemInfo" javaType="com.example.demo.entity.ItemInfo">
+	    	<id column="itemInfoId" property='itemInfoId' jdbcType="INTEGER" />
+	    	<result column="itemInfoName" property='itemInfoName' jdbcType="VARCHAR" />
+	    </association>
+	    <association property="courtInfo" javaType="com.example.demo.entity.CourtInfo">
+	    	<id column="courtId" property='courtId' jdbcType="INTEGER" />
+	    	<result column="courtName" property='courtName' jdbcType="VARCHAR" />
+	    	<result column="courtDistance" property='courtDistance' jdbcType="FLOAT" />
+	    	<result column="courtAdress" property='courtAdress' jdbcType="VARCHAR" />
+	    </association>
+    <!-- 其他属性的映射... -->
+  	</resultMap>
+    <select id="getCourtInfo" resultMap="CourtOpenInfoResultMap">
+        SELECT * FROM courtopeninfo
+        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
+        <!--踩坑记录：Java会为entity对象的int成员属性设定默认值为0，之前的写法是<if test="courtOpenWeekday > -1">
+        （因为前台传过来的值只会是1，2，3）,在前端页面未填写courtOpenWeekday的情况下，会导致mybatis将SQL文写成courtOpenWeekday = 0的形式，
+        所以数据的查询结果是一个空的列表-->
+       <!-- mysql提供了查看已执行过的SQL语句的功能，详见https://www.jiyik.com/tm/xwzj/sjk_6246.html，
+       cmd等于mysql命令：mysql -u root -p  -P 3306
+       本地已完成设置，只需输入行数为3的SELECT命令即可-->
+        <if test="courtOpenWeekday != 0">
+                 AND courtOpenWeekday = #{courtOpenWeekday}
+        </if>
+        <if test="courtOpenWeekNum != 0">
+                 AND courtOpenWeekNum = #{courtOpenWeekNum}
+        </if>
+        <if test="courtOpenTimeZone != 0">
+                 AND courtOpenTimeZone = #{courtOpenTimeZone}
+        </if>
+        <if test="courtOpenItemId != 0">
+                 AND courtOpenItemId = #{courtOpenItemId}
+        </if>
+    </select>
+</mapper>
