@@ -22,7 +22,7 @@
     </environment>
   </environments>
   <mappers>
-        <mapper resource="mapper/CourtInfoMapper.xml"  />
+        <mapper resource="mapper/CourtOpenInfoMapper.xml"  />
         <mapper resource="mapper/TeamPlanningInfoMapper.xml"  />
   </mappers>
 </configuration>

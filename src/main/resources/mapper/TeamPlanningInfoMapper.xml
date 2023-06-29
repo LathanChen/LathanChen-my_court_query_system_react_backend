@@ -8,7 +8,7 @@
 	    <id column="planningInfoId" property="planningInfoId" jdbcType="INTEGER" />
 	    <result column="teamId"  property="teamId" jdbcType="INTEGER" />
 	    <result column="teamItemId"  property="teamItemId" jdbcType="INTEGER" />
-	    <result column="planningDate"  property="planningDate" jdbcType="DATE" />
+	    <result column="planningDate"  property="planningDate" jdbcType="INTEGER" />
 	    <result column="planningTime"  property="planningTime" jdbcType="VARCHAR" />
 	    <result column="updateTime"  property="updateTime" jdbcType="TIMESTAMP" />
 	    <association property="teamInfo" javaType="com.example.demo.entity.TeamInfo">

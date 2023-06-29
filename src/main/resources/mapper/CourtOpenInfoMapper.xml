@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mapper.CourtInfoMapper">
+<mapper namespace="com.example.demo.mapper.CourtOpenInfoMapper">
 	<resultMap id="CourtOpenInfoResultMap" type="com.example.demo.entity.CourtOpenInfo">
 	    <!-- 定义结果映射 -->
 	    <!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样-->
@@ -28,7 +28,7 @@
 	    </association>
     <!-- 其他属性的映射... -->
   	</resultMap>
-    <select id="getCourtInfo" resultMap="CourtOpenInfoResultMap">
+    <select id="getInfo" resultMap="CourtOpenInfoResultMap">
         SELECT * FROM courtopeninfo
         JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
         JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
@@ -49,6 +49,15 @@
         </if>
         <if test="courtOpenItemId != 0">
                  AND courtOpenItemId = #{courtOpenItemId}
+        </if>
+    </select>
+    <select id="getTodayInfo" resultType="CourtOpenInfo">
+    	SELECT * FROM courtopeninfo
+    	<if test="dayOfWeekInWeek != 0">
+                 WHERE courtOpenWeekday = #{dayOfWeekInWeek}
+        </if>
+        <if test="weekNumber != 0">
+                 AND courtOpenWeekNum = #{weekNumber}
         </if>
     </select>
 </mapper>

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.CourtInfo;
 import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.TeamPlanningInfo;
-import com.example.demo.service.CourtInfoService;
 import com.example.demo.service.TeamPlanningInfoService;
 
 @Controller
