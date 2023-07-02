@@ -84,16 +84,16 @@ public class CourtInfoServiceImpl implements CourtOpenInfoService{
 
 		}
 
-		System.out.println(basketballNotStart);
-		System.out.println(basketballEnded);
-		System.out.println(tableTennisNotStart);
-		System.out.println(tableTennisEnded);
-		System.out.println(badmintonNotStart);
-		System.out.println(badmintonEnded);
-		System.out.println(volleyballNotStart);
-		System.out.println(volleyballEnded);
-		System.out.println(courtOpenInfos.length);
-		System.out.println(currentTimeInt);
+//		System.out.println(basketballNotStart);
+//		System.out.println(basketballEnded);
+//		System.out.println(tableTennisNotStart);
+//		System.out.println(tableTennisEnded);
+//		System.out.println(badmintonNotStart);
+//		System.out.println(badmintonEnded);
+//		System.out.println(volleyballNotStart);
+//		System.out.println(volleyballEnded);
+//		System.out.println(courtOpenInfos.length);
+//		System.out.println(currentTimeInt);
 
 		Map<String,Integer> todayEventMap = new HashMap<>();
 		todayEventMap.put("basketballNotStart", basketballNotStart);
