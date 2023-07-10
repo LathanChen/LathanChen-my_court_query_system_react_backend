@@ -24,5 +24,6 @@
   <mappers>
         <mapper resource="mapper/CourtOpenInfoMapper.xml"  />
         <mapper resource="mapper/TeamPlanningInfoMapper.xml"  />
+        <mapper resource="mapper/UserMapper.xml"  />
   </mappers>
 </configuration>
