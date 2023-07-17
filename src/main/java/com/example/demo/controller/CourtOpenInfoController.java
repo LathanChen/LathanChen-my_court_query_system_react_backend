@@ -22,7 +22,15 @@ public class CourtOpenInfoController {
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
+//		System.out.print(courtOpenInfo);
 		return courtOpenInfoService.getInfo(courtOpenInfo);
+	}
+	
+	@RequestMapping(value="/getInfoByAdmin",method=RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo){
+//		System.out.print(courtOpenInfo);
+		return courtOpenInfoService.getInfoByAdmin(courtOpenInfo);
 	}
 
 	@RequestMapping(value="/getTodayinfo",method=RequestMethod.GET)

@@ -8,5 +8,7 @@ public interface CourtOpenInfoService {
 
 	ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo);
 
+	ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo);
+
 	Map<String,Integer> getTodayInfo(int weekNumber,int dayOfWeekInWeek);
 }

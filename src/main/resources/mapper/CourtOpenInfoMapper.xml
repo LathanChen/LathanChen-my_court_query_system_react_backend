@@ -6,18 +6,18 @@
 	    <!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样-->
 	    <!--column和property必须都写？-->
 	    <id column="courtOpenInfoId" property="courtOpenInfoId" jdbcType="INTEGER" />
-	    <result column="courtOpenItemId" property="courtOpenItemId" jdbcType="INTEGER" />
-	    <result column="courtOpenCourtId" property="courtOpenCourtId" jdbcType="INTEGER" />
-	    <result column="courtOpenWeekday" property="courtOpenWeekday" jdbcType="INTEGER" />
-	    <result column="courtOpenWeekNum" property="courtOpenWeekNum" jdbcType="INTEGER" />
-	    <result column="courtOpenTimeZone" property="courtOpenTimeZone" jdbcType="INTEGER" />
+	    <result column="courtOpenItemId" property="courtOpenItemId" jdbcType="VARCHAR" />
+	    <result column="courtOpenCourtId" property="courtOpenCourtId" jdbcType="VARCHAR" />
+	    <result column="courtOpenWeekday" property="courtOpenWeekday" jdbcType="VARCHAR" />
+	    <result column="courtOpenWeekNum" property="courtOpenWeekNum" jdbcType="VARCHAR" />
+	    <result column="courtOpenTimeZone" property="courtOpenTimeZone" jdbcType="VARCHAR" />
 	    <result column="courtOpenTime" property="courtOpenTime" jdbcType="VARCHAR" />
 	    <result column="courtOpenUpdateTime" property="courtOpenUpdateTime" jdbcType="TIMESTAMP" />
 	    <result column="courtOpenNote" property="courtOpenNote" jdbcType="VARCHAR" />
 	    <!--association代表一对一的关系，这里CourtOpenInfo使用了成员属性ItemInfo和CourtInfo（两者都是对象）
 	    来存储使用SQL的JOIN ON语法查询到的另外两张表的数据，需要分别设置这两张表的字段和这两个对象的对应关系-->
 	    <association property="itemInfo" javaType="com.example.demo.entity.ItemInfo">
-	    	<id column="itemInfoId" property='itemInfoId' jdbcType="INTEGER" />
+	    	<id column="itemInfoId" property='itemInfoId' jdbcType="VARCHAR" />
 	    	<result column="itemInfoName" property='itemInfoName' jdbcType="VARCHAR" />
 	    </association>
 	    <association property="courtInfo" javaType="com.example.demo.entity.CourtInfo">
@@ -38,18 +38,21 @@
        <!-- mysql提供了查看已执行过的SQL语句的功能，详见https://www.jiyik.com/tm/xwzj/sjk_6246.html，
        cmd等于mysql命令：mysql -u root -p  -P 3306
        本地已完成设置，只需输入行数为3的SELECT命令即可-->
-        <if test="courtOpenWeekday != 0">
+       <where>
+       <!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
+		<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
+			(courtOpenWeekNum = #{courtOpenWeekNum} OR courtOpenWeekNum = 7)
+		</if>
+        <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
                  AND courtOpenWeekday = #{courtOpenWeekday}
         </if>
-        <if test="courtOpenWeekNum != 0">
-                 AND courtOpenWeekNum = #{courtOpenWeekNum}
-        </if>
-        <if test="courtOpenTimeZone != 0">
+        <if test="courtOpenTimeZone != ''">
                  AND courtOpenTimeZone = #{courtOpenTimeZone}
         </if>
         <if test="courtOpenItemId != 0">
                  AND courtOpenItemId = #{courtOpenItemId}
         </if>
+        </where>
     </select>
     <select id="getTodayInfo" resultType="CourtOpenInfo">
     	SELECT * FROM courtopeninfo
@@ -59,5 +62,28 @@
         <if test="weekNumber != 0">
                  AND courtOpenWeekNum = #{weekNumber}
         </if>
+    </select>
+        <select id="getInfoByAdmin" resultMap="CourtOpenInfoResultMap">
+        SELECT * FROM courtopeninfo
+        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
+       <where>
+       <!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
+		<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
+			courtOpenWeekNum = #{courtOpenWeekNum}
+		</if>
+        <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
+                 AND courtOpenWeekday = #{courtOpenWeekday}
+        </if>
+        <if test="courtOpenTimeZone != ''">
+                 AND courtOpenTimeZone = #{courtOpenTimeZone}
+        </if>
+        <if test="courtOpenCourtId != ''">
+                 AND courtOpenCourtId = #{courtOpenCourtId}
+        </if>
+        <if test="courtOpenItemId != 0">
+                 AND courtOpenItemId = #{courtOpenItemId}
+        </if>
+        </where>
     </select>
 </mapper>

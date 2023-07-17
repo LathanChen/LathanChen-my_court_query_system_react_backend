@@ -6,6 +6,9 @@
  <objectWrapperFactory>, <reflectorFactory>, <plugins>, <environments>, <databaseIdProvider>, <mappers>。
  也就是说，<configuration> 元素的子元素只能是这些，且必须按照指定的顺序排列。-->
 <!-- 引入pagehelper完成分页功能 -->
+<settings>
+	<setting name="logImpl" value="STDOUT_LOGGING"/>
+</settings>
   <plugins>
     <plugin interceptor="com.github.pagehelper.PageInterceptor">
     </plugin>
@@ -25,5 +28,7 @@
         <mapper resource="mapper/CourtOpenInfoMapper.xml"  />
         <mapper resource="mapper/TeamPlanningInfoMapper.xml"  />
         <mapper resource="mapper/UserMapper.xml"  />
+        <mapper resource="mapper/ItemInfoMapper.xml"  />
+        <mapper resource="mapper/CourtInfoMapper.xml"  />
   </mappers>
 </configuration>

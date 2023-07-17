@@ -81,6 +81,8 @@ public class SecurityConfig {
                         .antMatchers("/courtOpenInfo/getInfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/teamPlanningInfo/getteamplanninginfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/user/register").permitAll()//不需要进行身份验证的接口
+                        .antMatchers("/iteminfo").permitAll()//不需要进行身份验证的接口
+                        .antMatchers("/courtinfo").permitAll()//不需要进行身份验证的接口
                         .anyRequest().authenticated()//除上面外的所有请求全部需要 鉴权认证
                 );
 //        配置登出处理

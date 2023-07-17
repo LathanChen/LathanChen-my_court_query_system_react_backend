@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,6 @@ public class LogoutHandlerImpl implements LogoutHandler {
     	LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         Long userid = loginUser.getUser().getId();
         redisCache.deleteObject("login:"+userid);
-    	System.out.println("注销成功！");
+    	System.out.println("注销成功!！");
     }
 }
