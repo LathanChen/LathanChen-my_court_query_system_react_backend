@@ -10,4 +10,6 @@ public interface CourtOpenInfoMapper {
 	CourtOpenInfo[] getTodayInfo(int weekNumber,int dayOfWeekInWeek);
 
 	ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo);
+
+	boolean setInfo(CourtOpenInfo courtOpenInfo);
 }

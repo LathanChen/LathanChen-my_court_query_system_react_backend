@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.CourtInfo;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.CourtOpenInfoService;
 
 @Controller
@@ -25,7 +27,14 @@ public class CourtOpenInfoController {
 //		System.out.print(courtOpenInfo);
 		return courtOpenInfoService.getInfo(courtOpenInfo);
 	}
-	
+
+	@RequestMapping(value="/setInfo",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseResult setInfo(@RequestBody CourtOpenInfo courtOpenInfo){
+		System.out.print(courtOpenInfo);
+		return courtOpenInfoService.setInfo(courtOpenInfo);
+	}
+
 	@RequestMapping(value="/getInfoByAdmin",method=RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo){
@@ -40,4 +49,5 @@ public class CourtOpenInfoController {
 			@RequestParam("dayOfWeekInWeek") int dayOfWeekInWeek){
 		return courtOpenInfoService.getTodayInfo(weekNumber,dayOfWeekInWeek);
 	}
+
 }

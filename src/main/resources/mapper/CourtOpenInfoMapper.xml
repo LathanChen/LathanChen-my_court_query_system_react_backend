@@ -86,4 +86,23 @@
         </if>
         </where>
     </select>
+    <insert id="setInfo" parameterType="CourtOpenInfo">
+		INSERT INTO courtopeninfo (
+		courtOpenItemId,
+		courtOpenCourtId,
+		courtOpenWeekNum,
+		courtOpenWeekday,
+		courtOpenTimeZone,
+		courtOpenTime,
+		courtOpenUpdateTime)
+		VALUES (
+		#{courtOpenItemId},
+		#{courtOpenCourtId},
+		#{courtOpenWeekNum},
+		#{courtOpenWeekday},
+		#{courtOpenTimeZone},
+		#{courtOpenTime},
+		#{courtOpenUpdateTime}
+		)
+	</insert>
 </mapper>

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.Map;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.ResponseResult;
 
 public interface CourtOpenInfoService {
 
@@ -11,4 +12,6 @@ public interface CourtOpenInfoService {
 	ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo);
 
 	Map<String,Integer> getTodayInfo(int weekNumber,int dayOfWeekInWeek);
+
+	ResponseResult setInfo(CourtOpenInfo courtOpenInfo);
 }

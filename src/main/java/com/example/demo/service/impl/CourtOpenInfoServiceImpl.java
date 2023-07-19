@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.ResponseResult;
 import com.example.demo.mapper.CourtOpenInfoMapper;
 import com.example.demo.service.CourtOpenInfoService;
 
@@ -111,6 +114,27 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 	public ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo) {
 		// TODO 自動生成されたメソッド・スタブ
 		return courtOpenInfoMapper.getInfoByAdmin(courtOpenInfo);
+	}
+
+	@Override
+	public ResponseResult setInfo(CourtOpenInfo courtOpenInfo) {
+		// TODO 自動生成されたメソッド・スタブ
+		try {
+			courtOpenInfo.setCourtOpenUpdateTime(new Timestamp(System.currentTimeMillis()));
+			boolean setResult = courtOpenInfoMapper.setInfo(courtOpenInfo);
+			System.out.println("111111111111111111111111");
+			System.out.println(courtOpenInfo);
+			if (setResult) {
+				return new ResponseResult(200,"添加成功",true);
+			}
+			else {
+				return new ResponseResult(500,"添加失败",false);
+			}
+		}
+		catch (Exception e){
+			return new ResponseResult(500,"添加失败",e);
+		}
+
 	}
 
 }
