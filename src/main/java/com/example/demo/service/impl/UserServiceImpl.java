@@ -49,6 +49,14 @@ public class UserServiceImpl implements  UserService{
 		            // 获取用户详细信息
 		        	LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
+		        	System.out.println("userPermissions");
+		        	System.out.println("userPermissions");
+		        	System.out.println("userPermissions");
+		        	System.out.println("userPermissions");
+		        	System.out.println("userPermissions");
+		        	System.out.println("userPermissions");
+		        	System.out.println(loginUser);
+
 		            // 获取用户角色信息
 		            userRole = loginUser.getAuthorities().stream()
 		                    .map(Object::toString)

@@ -73,7 +73,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf().disable(); // 基于 token，不需要 csrf
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// 基于 token，不需要 session
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);// 基于 token，不需要 session
         // 下面开始设置权限
         http.authorizeRequests(authorize -> authorize
                         .antMatchers("/user/login").permitAll()//不需要进行身份验证的接口
@@ -83,6 +83,8 @@ public class SecurityConfig {
                         .antMatchers("/user/register").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/iteminfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/courtinfo").permitAll()//不需要进行身份验证的接口
+//                        注意：对于url变量的地址，需要这么配置放行
+//                        .antMatchers("/courtOpenInfo/getinfobyid/{courtOpenItemId}").permitAll()//不需要进行身份验证的接口
                         .anyRequest().authenticated()//除上面外的所有请求全部需要 鉴权认证
                 );
 //        配置登出处理

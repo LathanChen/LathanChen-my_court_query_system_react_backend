@@ -105,4 +105,28 @@
 		#{courtOpenUpdateTime}
 		)
 	</insert>
+	<select id="getInfoById" resultType="CourtOpenInfo">
+    	SELECT * FROM courtopeninfo
+    	<if test="courtOpenItemId != 0">
+			WHERE courtOpenInfoId = #{courtOpenInfoId}
+        </if>
+    </select>
+    <update id="updateInfo" parameterType="CourtOpenInfo">
+    	UPDATE courtopeninfo
+		SET courtOpenItemId = #{courtOpenItemId},
+			courtOpenCourtId = #{courtOpenCourtId},
+			courtOpenWeekNum = #{courtOpenWeekNum},
+			courtOpenWeekday = #{courtOpenWeekday},
+			courtOpenTimeZone = #{courtOpenTimeZone},
+			courtOpenTime = #{courtOpenTime},
+			courtOpenUpdateTime = #{courtOpenUpdateTime}
+		WHERE courtOpenInfoId = #{courtOpenInfoId}
+    </update>
+    <delete  id="deleteInfo" parameterType="java.util.List">
+    	DELETE FROM courtopeninfo
+    	WHERE courtOpenInfoId IN
+    	<foreach collection="infoIdlist" item="courtOpenInfoId" open="(" separator="," close=")">
+            #{courtOpenInfoId}
+        </foreach>
+    </delete>
 </mapper>

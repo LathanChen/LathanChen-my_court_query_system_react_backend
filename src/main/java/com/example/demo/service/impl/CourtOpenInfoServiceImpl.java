@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,6 +136,35 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 			return new ResponseResult(500,"添加失败",e);
 		}
 
+	}
+
+	@Override
+	public CourtOpenInfo getInfoById(int courtOpenItemId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return courtOpenInfoMapper.getInfoById(courtOpenItemId);
+	}
+
+	@Override
+	public boolean updateInfo(CourtOpenInfo courtOpenInfo) {
+		// TODO 自動生成されたメソッド・スタブ
+		courtOpenInfo.setCourtOpenUpdateTime(new Timestamp(System.currentTimeMillis()));
+		if(courtOpenInfoMapper.updateInfo(courtOpenInfo) == 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteInfo(List infoIdlist) {
+		// TODO 自動生成されたメソッド・スタブ
+		if(courtOpenInfoMapper.deleteInfo(infoIdlist) != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
