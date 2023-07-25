@@ -1,6 +1,10 @@
 package com.example.demo.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,7 +17,11 @@ public class CorsConfig implements WebMvcConfigurer {
       // 设置允许跨域的路径，也就是允许哪些地址向后端发送跨域请求
         registry.addMapping("/**")
                 // 设置允许跨域请求的域名，也就是前端项目的地址
-                .allowedOriginPatterns("http://localhost:3000")
+//                .allowedOriginPatterns("http://localhost:3000")
+//        		部署用
+                .allowedOrigins("http://18.183.169.200")
+//                最新部署用
+//                .allowedOriginPatterns("*")
                 // 是否允许cookie
                 .allowCredentials(true)
                 // 设置允许的请求方式
@@ -23,4 +31,5 @@ public class CorsConfig implements WebMvcConfigurer {
                 // 跨域允许时间
                 .maxAge(3600);
     }
+
 }
