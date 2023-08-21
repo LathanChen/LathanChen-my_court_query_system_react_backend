@@ -19,4 +19,8 @@ public interface CourtOpenInfoMapper {
 	int updateInfo(CourtOpenInfo courtOpenInfo);
 
 	int deleteInfo(List infoIdlist);
+
+	ArrayList<CourtOpenInfo> getItemCountByCourt();
+
+	String getCourtItemNames(int courtId);
 }

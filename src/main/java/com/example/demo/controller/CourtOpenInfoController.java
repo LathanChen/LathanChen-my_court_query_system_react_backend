@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.CourtInfo;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.PaginationResult;
 import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.CourtOpenInfoService;
 
@@ -26,8 +27,7 @@ public class CourtOpenInfoController {
 
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
-//		System.out.print(courtOpenInfo);
+	public PaginationResult<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
 		return courtOpenInfoService.getInfo(courtOpenInfo);
 	}
 
@@ -47,7 +47,7 @@ public class CourtOpenInfoController {
 
 	@RequestMapping(value="/getTodayinfo",method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String,Integer> getCourtInfo(
+	public Map<String,List> getCourtInfo(
 			@RequestParam("weekNumber") int weekNumber,
 			@RequestParam("dayOfWeekInWeek") int dayOfWeekInWeek){
 		return courtOpenInfoService.getTodayInfo(weekNumber,dayOfWeekInWeek);
@@ -73,5 +73,11 @@ public class CourtOpenInfoController {
 		System.out.println(infoIdlist);
 		return courtOpenInfoService.deleteInfo(infoIdlist);
 	}
+
+//	@RequestMapping(value="/getCourtItemNames",method=RequestMethod.GET)
+//	@ResponseBody
+//	public String getCourtItemNames(@RequestParam("courtId") int courtId){
+//		return courtOpenInfoService.getCourtItemNames(courtId);
+//	}
 
 }

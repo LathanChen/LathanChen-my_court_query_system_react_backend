@@ -40,4 +40,13 @@ public class CourtOpenInfo {
 //	其他一些备注
 	private String courtOpenNote;
 
+//	batch追加，相同条件（如场地相同）下的明细数量
+	private int countInfos;
+
+//	分页追加，页码
+	private int PageNum;
+
+//	分页追加，每页明细的数量
+	private int PageSize;
+
 }

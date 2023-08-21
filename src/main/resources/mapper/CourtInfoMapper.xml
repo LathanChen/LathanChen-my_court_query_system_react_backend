@@ -4,4 +4,33 @@
 	<select id="getCourts" resultType="com.example.demo.entity.CourtInfo">
         SELECT * FROM courtinfo
     </select>
+	<select id="getCourtNames" resultType="com.example.demo.entity.CourtInfo">
+        SELECT courtName,courtId FROM courtinfo
+    </select>
+	<select id="getCourtImgUrls" resultType="String">
+        SELECT imgUrl FROM court_info_img_url WHERE courtId = #{courtId}
+    </select>
+	<select id="getCourtInfoById" resultType="com.example.demo.entity.CourtInfo">
+        SELECT * FROM courtinfo WHERE courtId = #{courtId}
+    </select>
+	<select id="getCourtAvgScoreById" resultType="float">
+        SELECT AVG(score) FROM courtEvaluate WHERE courtId = #{courtId}
+    </select>
+	<select id="getAllCommentsById" resultType="com.example.demo.entity.CourtEvaluate">
+        SELECT courtComment,score FROM courtEvaluate WHERE courtId = #{courtId} ORDER BY num desc
+    </select>
+    <insert id="setCourtEvaluate" parameterType="CourtEvaluate">
+		INSERT INTO courtevaluate
+		(
+		score,
+		courtComment,
+		courtId,
+		updatetime)
+		VALUES
+		(
+		#{score},
+		#{courtComment},
+		#{courtId},
+		#{updatetime})
+    </insert>
 </mapper>

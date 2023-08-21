@@ -79,10 +79,12 @@ public class SecurityConfig {
                         .antMatchers("/user/login").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/courtOpenInfo/getTodayinfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/courtOpenInfo/getInfo").permitAll()//不需要进行身份验证的接口
+                        .antMatchers("/courtOpenInfo/getCourtItemNames").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/teamPlanningInfo/getteamplanninginfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/user/register").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/iteminfo").permitAll()//不需要进行身份验证的接口
-                        .antMatchers("/courtinfo").permitAll()//不需要进行身份验证的接口
+                        .antMatchers("/courtinfo/*").permitAll()//不需要进行身份验证的接口,*表示通配符
+//                        .antMatchers("/courtinfo/getcourtnames").permitAll()//不需要进行身份验证的接口
 //                        注意：对于url变量的地址，需要这么配置放行
 //                        .antMatchers("/courtOpenInfo/getinfobyid/{courtOpenItemId}").permitAll()//不需要进行身份验证的接口
                         .anyRequest().authenticated()//除上面外的所有请求全部需要 鉴权认证

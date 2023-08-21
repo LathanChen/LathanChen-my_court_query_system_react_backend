@@ -11,6 +11,7 @@ import java.io.IOException;
 
 // 部署用
 /*全局跨域配置*/
+//链接:https://blog.csdn.net/csdn_avatar_2019/article/details/126538547
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Configuration
 public class CORSFilter implements Filter {

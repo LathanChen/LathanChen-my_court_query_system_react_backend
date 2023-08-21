@@ -17,4 +17,13 @@ public class CourtInfo {
 //	场地的具体地址
 	private String courtAdress;
 
+//	场地的电话
+	private String courtTelNum;
+
+//	车站信息
+	private String courtTramInfo;
+
+//	场地的评分
+	private float score;
+
 }

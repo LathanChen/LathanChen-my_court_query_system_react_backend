@@ -11,24 +11,49 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.PaginationResult;
 import com.example.demo.entity.ResponseResult;
 import com.example.demo.mapper.CourtOpenInfoMapper;
 import com.example.demo.service.CourtOpenInfoService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service
 public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
+
+	public static final String BASKETBALL_ITEM_ID = "1";
+	public static final String TABLE_TENNIS_ITEM_ID = "2";
+	public static final String BADMINTON_ITEM_ID = "3";
+	public static final String VOLLEYBALL_ITEM_ID = "4";
+
 	@Autowired
 	private CourtOpenInfoMapper courtOpenInfoMapper;
 
 	@Override
-	public ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo) {
+	public PaginationResult<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo) {
 		// TODO 自動生成されたメソッド・スタブ
-		return courtOpenInfoMapper.getInfo(courtOpenInfo);
+//		前端的MUI框架，DataGrid的页码计算不知道哪出了问题，ShowQueryData组件的paginationModel.page必须设置为0开始，所以在分页查询的时候只能给每个PageNum加上1
+		int PageNum = courtOpenInfo.getPageNum()+1;
+		int PageSize = courtOpenInfo.getPageSize();
+		PageHelper.startPage(PageNum, PageSize);     // 使用PageHelper进行分页查询获得场地查询结果
+		List<CourtOpenInfo> courtList = courtOpenInfoMapper.getInfo(courtOpenInfo);
+	    PageInfo<CourtOpenInfo> pageInfo = new PageInfo<>(courtList);
+
+	    PaginationResult<CourtOpenInfo> CourtOpenInfoResult = new PaginationResult<>();
+	    CourtOpenInfoResult.setList(pageInfo.getList());
+	    System.out.println(pageInfo.getList());
+	    System.out.println("-------------------");
+	    CourtOpenInfoResult.setTotal(pageInfo.getTotal());
+	    CourtOpenInfoResult.setPageNum(pageInfo.getPageNum());
+	    CourtOpenInfoResult.setPageSize(pageInfo.getPageSize());
+	    CourtOpenInfoResult.setPages(pageInfo.getPages());
+	    CourtOpenInfoResult.setCount(pageInfo.getList().size());
+        return CourtOpenInfoResult;
 	}
 
 	@Override
 //	在Java中，泛型类型参数不能是基本数据类型，例如int、char、boolean等。因此，尝试将Map<String, int>作为方法的返回类型时，编译器会报错。
-	public Map<String,Integer> getTodayInfo(int weekNumber,int dayOfWeekInWeek) {
+	public Map<String,List> getTodayInfo(int weekNumber,int dayOfWeekInWeek) {
 		// TODO 自動生成されたメソッド・スタブ
 		CourtOpenInfo[] courtOpenInfos = courtOpenInfoMapper.getTodayInfo(weekNumber, dayOfWeekInWeek);
 
@@ -39,50 +64,59 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
         // 格式化时间为数值类型
         int currentTimeInt = Integer.parseInt(currentTime.format(formatter));
 
-		int basketballNotStart = 0;
-		int basketballEnded = 0;
-		int tableTennisNotStart = 0;
-		int tableTennisEnded = 0;
-		int badmintonNotStart = 0;
-		int badmintonEnded = 0;
-		int volleyballNotStart = 0;
-		int volleyballEnded = 0;
+//		int basketballNotStart = 0;
+//		int basketballEnded = 0;
+//		int tableTennisNotStart = 0;
+//		int tableTennisEnded = 0;
+//		int badmintonNotStart = 0;
+//		int badmintonEnded = 0;
+//		int volleyballNotStart = 0;
+//		int volleyballEnded = 0;
+
+		List<CourtOpenInfo> basketballNotStartList = new ArrayList<>();
+		List<CourtOpenInfo> basketballEndedList = new ArrayList<>();
+		List<CourtOpenInfo> tableTennisNotStartList = new ArrayList<>();
+		List<CourtOpenInfo> tableTennisEndedList = new ArrayList<>();
+		List<CourtOpenInfo> badmintonNotStartList = new ArrayList<>();
+		List<CourtOpenInfo> badmintonEndedList = new ArrayList<>();
+		List<CourtOpenInfo> volleyballNotStartList = new ArrayList<>();
+		List<CourtOpenInfo> volleyballEndedList = new ArrayList<>();
 
 		for (int a = 0;a < courtOpenInfos.length;a++) {
 			CourtOpenInfo courtOpenInfo = courtOpenInfos[a];
 //			先通过"-"分割字符串，再去除时间数据中的冒号，最后转化为int类型
 			int openTime = Integer.parseInt(courtOpenInfo.getCourtOpenTime().split("-")[0].replace(":", ""));
 			int endTime = Integer.parseInt(courtOpenInfo.getCourtOpenTime().split("-")[1].replace(":", ""));
-			if (courtOpenInfo.getCourtOpenItemId().equals("1")) {
+			if (courtOpenInfo.getCourtOpenItemId().equals(BASKETBALL_ITEM_ID)) {
 				if (openTime > currentTimeInt) {
-					basketballNotStart++;
+					basketballNotStartList.add(courtOpenInfo);
 				}
 				if (endTime < currentTimeInt) {
-					basketballEnded++;
+					basketballEndedList.add(courtOpenInfo);
 				}
 			}
-			if (courtOpenInfo.getCourtOpenItemId().equals("2")) {
+			if (courtOpenInfo.getCourtOpenItemId().equals(TABLE_TENNIS_ITEM_ID)) {
 				if (openTime > currentTimeInt) {
-					tableTennisNotStart++;
+					tableTennisNotStartList.add(courtOpenInfo);
 				}
 				if (endTime < currentTimeInt) {
-					tableTennisEnded++;
+					tableTennisEndedList.add(courtOpenInfo);
 				}
 			}
-			if (courtOpenInfo.getCourtOpenItemId().equals("3")) {
+			if (courtOpenInfo.getCourtOpenItemId().equals(BADMINTON_ITEM_ID)) {
 				if (openTime > currentTimeInt) {
-					badmintonNotStart++;
+					badmintonNotStartList.add(courtOpenInfo);
 				}
 				if (endTime < currentTimeInt) {
-					badmintonEnded++;
+					badmintonEndedList.add(courtOpenInfo);
 				}
 			}
-			if (courtOpenInfo.getCourtOpenItemId().equals("4")) {
+			if (courtOpenInfo.getCourtOpenItemId().equals(VOLLEYBALL_ITEM_ID)) {
 				if (openTime > currentTimeInt) {
-					volleyballNotStart++;
+					volleyballNotStartList.add(courtOpenInfo);
 				}
 				if (endTime < currentTimeInt) {
-					volleyballEnded++;
+					volleyballEndedList.add(courtOpenInfo);
 				}
 			}
 
@@ -99,15 +133,15 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 //		System.out.println(courtOpenInfos.length);
 //		System.out.println(currentTimeInt);
 
-		Map<String,Integer> todayEventMap = new HashMap<>();
-		todayEventMap.put("basketballNotStart", basketballNotStart);
-		todayEventMap.put("basketballEnded", basketballEnded);
-		todayEventMap.put("tableTennisNotStart", tableTennisNotStart);
-		todayEventMap.put("tableTennisEnded", tableTennisEnded);
-		todayEventMap.put("badmintonNotStart", badmintonNotStart);
-		todayEventMap.put("badmintonEnded", badmintonEnded);
-		todayEventMap.put("volleyballNotStart", volleyballNotStart);
-		todayEventMap.put("volleyballEnded", volleyballEnded);
+		Map<String,List> todayEventMap = new HashMap<>();
+		todayEventMap.put("basketballNotStart", basketballNotStartList);
+		todayEventMap.put("basketballEnded", basketballEndedList);
+		todayEventMap.put("tableTennisNotStart", tableTennisNotStartList);
+		todayEventMap.put("tableTennisEnded", tableTennisEndedList);
+		todayEventMap.put("badmintonNotStart", badmintonNotStartList);
+		todayEventMap.put("badmintonEnded", badmintonEndedList);
+		todayEventMap.put("volleyballNotStart", volleyballNotStartList);
+		todayEventMap.put("volleyballEnded", volleyballEndedList);
 		return todayEventMap;
 	}
 
@@ -165,6 +199,12 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 		else {
 			return false;
 		}
+	}
+
+	@Override
+	public String getCourtItemNames(int courtId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return courtOpenInfoMapper.getCourtItemNames(courtId);
 	}
 
 }

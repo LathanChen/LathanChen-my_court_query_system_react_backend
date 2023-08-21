@@ -14,6 +14,7 @@
 	    <result column="courtOpenTime" property="courtOpenTime" jdbcType="VARCHAR" />
 	    <result column="courtOpenUpdateTime" property="courtOpenUpdateTime" jdbcType="TIMESTAMP" />
 	    <result column="courtOpenNote" property="courtOpenNote" jdbcType="VARCHAR" />
+	    <result column="countInfos" property="countInfos" jdbcType="INTEGER" />
 	    <!--association代表一对一的关系，这里CourtOpenInfo使用了成员属性ItemInfo和CourtInfo（两者都是对象）
 	    来存储使用SQL的JOIN ON语法查询到的另外两张表的数据，需要分别设置这两张表的字段和这两个对象的对应关系-->
 	    <association property="itemInfo" javaType="com.example.demo.entity.ItemInfo">
@@ -54,13 +55,16 @@
         </if>
         </where>
     </select>
-    <select id="getTodayInfo" resultType="CourtOpenInfo">
+    <select id="getTodayInfo" resultMap="CourtOpenInfoResultMap">
     	SELECT * FROM courtopeninfo
+    	JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
     	<if test="dayOfWeekInWeek != 0">
                  WHERE courtOpenWeekday = #{dayOfWeekInWeek}
         </if>
         <if test="weekNumber != 0">
-                 AND courtOpenWeekNum = #{weekNumber}
+                 AND (courtOpenWeekNum = #{weekNumber}
+                 OR courtOpenWeekNum = 7)
         </if>
     </select>
         <select id="getInfoByAdmin" resultMap="CourtOpenInfoResultMap">
@@ -129,4 +133,17 @@
             #{courtOpenInfoId}
         </foreach>
     </delete>
+
+    <select id="getItemCountByCourt" resultMap="CourtOpenInfoResultMap">
+    	SELECT courtopeninfo.courtOpenCourtId,COUNT(courtOpenInfoId) AS countInfos,courtinfo.courtName
+		FROM courtopeninfo INNER JOIN courtinfo
+		ON courtOpenCourtId = courtId
+		GROUP BY courtOpenCourtId
+    </select>
+   	<select id="getCourtItemNames" resultType="String">
+   	<!-- GROUP_CONCAT函数用于将itemInfoName字段的所有值连接成一个字符串-->
+        SELECT GROUP_CONCAT(DISTINCT itemInfoName) FROM courtopeninfo
+        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+        WHERE courtOpenCourtId = #{courtId}
+    </select>
 </mapper>
