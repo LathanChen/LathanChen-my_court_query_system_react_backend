@@ -77,16 +77,16 @@
 			courtOpenWeekNum = #{courtOpenWeekNum}
 		</if>
         <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
-                 AND courtOpenWeekday = #{courtOpenWeekday}
+            AND courtOpenWeekday = #{courtOpenWeekday}
         </if>
         <if test="courtOpenTimeZone != ''">
-                 AND courtOpenTimeZone = #{courtOpenTimeZone}
+            AND courtOpenTimeZone = #{courtOpenTimeZone}
         </if>
         <if test="courtOpenCourtId != ''">
-                 AND courtOpenCourtId = #{courtOpenCourtId}
+            AND courtOpenCourtId = #{courtOpenCourtId}
         </if>
         <if test="courtOpenItemId != 0">
-                 AND courtOpenItemId = #{courtOpenItemId}
+            AND courtOpenItemId = #{courtOpenItemId}
         </if>
         </where>
     </select>
