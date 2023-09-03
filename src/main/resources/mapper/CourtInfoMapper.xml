@@ -17,9 +17,9 @@
         SELECT AVG(score) FROM courtEvaluate WHERE courtId = #{courtId}
     </select>
 	<select id="getAllCommentsById" resultType="com.example.demo.entity.CourtEvaluate">
-        SELECT courtComment,score FROM courtEvaluate WHERE courtId = #{courtId} ORDER BY num desc
+        SELECT courtComment,score FROM courtEvaluate WHERE courtId = #{courtId} And courtComment is not null ORDER BY num desc
     </select>
-    <insert id="setCourtEvaluate" parameterType="CourtEvaluate">
+    <insert id="setCourtEvaluate" parameterType="com.example.demo.entity.CourtEvaluate">
 		INSERT INTO courtevaluate
 		(
 		score,
@@ -32,5 +32,38 @@
 		#{courtComment},
 		#{courtId},
 		#{updatetime})
+    </insert>
+   	<select id="checkSameCourtName" resultType="int">
+        SELECT COUNT(*) FROM courtinfo WHERE courtName = #{courtName}
+    </select>
+    <!--useGeneratedKeys="true" 表示你想获取由数据库自动生成的键，而 keyProperty="id" 指定了应该将这个生成的键赋值给Java 对象的哪个属性。
+	一旦你执行了这个插入操作，传入的 CourtInfo 对象的 courtId 属性将被自动更新为新生成的 courtId 值。 -->
+    <insert id="setCourtInfo" parameterType="com.example.demo.entity.CourtInfo" useGeneratedKeys="true" keyProperty="courtId">
+		INSERT INTO courtinfo
+		(
+		courtName,
+		courtAdress,
+		courtTelNum,
+		courtStation,
+		courtFromStationDistance)
+		VALUES
+		(
+		#{courtName},
+		#{courtAdress},
+		#{courtTelNum},
+		#{courtStation},
+		#{courtFromStationDistance})
+    </insert>
+    <insert id="setCourtInfoUrls" parameterType="map">
+		INSERT INTO court_info_img_url
+		(
+		imgUrl,
+		courtId,
+		imgName)
+		VALUES
+	    <foreach collection="courtInfoUrls" item="courtInfoUrl" index="index" separator=",">
+		  (#{courtInfoUrl}, #{courtId}, #{courtNames[${index}]})
+		</foreach>
+
     </insert>
 </mapper>

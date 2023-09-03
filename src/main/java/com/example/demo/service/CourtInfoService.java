@@ -17,4 +17,8 @@ public interface CourtInfoService {
 	Map<String,Object> getAllCourtInfoById (int courtId);
 
 	int setCourtEvaluate(CourtEvaluate courtEvaluate);
+
+	boolean checkSameCourtName(String courtName);
+
+	boolean setCourtInfoAndImgs(Map<String,Object> urlAndNames);
 }

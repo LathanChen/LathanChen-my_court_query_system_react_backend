@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import com.example.demo.mapper.CourtOpenInfoMapper;
 import com.example.demo.mapper.ItemInfoMapper;
 import com.example.demo.service.CourtInfoService;
 import com.example.demo.service.ItemInfoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -79,5 +81,45 @@ public class CourtInfoServiceImpl implements  CourtInfoService{
 		courtEvaluate.setUpdatetime(new Timestamp(System.currentTimeMillis()));
 		return courtInfoMapper.setCourtEvaluate(courtEvaluate);
 	}
+
+	@Override
+	public boolean checkSameCourtName(String courtName) {
+		// TODO 自動生成されたメソッド・スタブ
+		boolean flg = false;
+		if ((courtInfoMapper.checkSameCourtName(courtName) >= 1)) {
+			flg = true;
+		}
+		else {
+		}
+		return flg;
+	}
+
+	@Override
+	public boolean setCourtInfoAndImgs(Map<String, Object> urlAndNames) {
+		// TODO 自動生成されたメソッド・スタブ
+//		List<String> courtNames= (List)urlAndNames.get("courtNames");
+//		List<String> courtInfoUrls= (List)urlAndNames.get("courtInfoUrls");
+		boolean flg = true;
+		ObjectMapper mapper = new ObjectMapper();
+//		springboot在解析json时将类型转为了linkedHashmap了，而不是CourtInfo实体类
+        // 使用ObjectMapper将LinkedHashMap转换为CourtInfo对象
+        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) urlAndNames.get("courtInfos");
+        CourtInfo courtInfo = mapper.convertValue(map, CourtInfo.class);
+		if (courtInfoMapper.setCourtInfo(courtInfo) == 1) {
+			urlAndNames.put("courtId", courtInfo.getCourtId());
+			if (courtInfoMapper.setCourtInfoUrls(urlAndNames) >= 0) {
+			}
+			else {
+				flg = false;
+			}
+		}
+		else {
+			flg = false;
+		}
+
+		return flg;
+	}
+
+
 
 }

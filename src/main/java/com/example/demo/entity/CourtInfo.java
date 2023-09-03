@@ -8,8 +8,8 @@ public class CourtInfo {
 //	场地名
 	private String courtName;
 
-//	场地距离
-	private float courtDistance;
+//	距离车站路程
+	private float courtFromStationDistance;
 
 //	场地编号
 	private int courtId;
@@ -21,7 +21,7 @@ public class CourtInfo {
 	private String courtTelNum;
 
 //	车站信息
-	private String courtTramInfo;
+	private String courtStation;
 
 //	场地的评分
 	private float score;

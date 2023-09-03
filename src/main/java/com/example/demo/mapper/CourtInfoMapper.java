@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.demo.entity.CourtEvaluate;
 import com.example.demo.entity.CourtInfo;
@@ -19,4 +20,10 @@ public interface CourtInfoMapper {
 	List<String> getAllCommentsById(int courtId);
 
 	int setCourtEvaluate(CourtEvaluate courtEvaluate);
+
+	int checkSameCourtName(String courtName);
+
+	int setCourtInfo(CourtInfo courtInfo);
+
+	int setCourtInfoUrls(Map<String,Object> urlAndNames);
 }
