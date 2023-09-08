@@ -27,7 +27,9 @@ import com.example.demo.service.CourtInfoService;
 @RequestMapping("/courtinfo")
 public class CourtInfoController {
 //	开发环境下图片上传后的存储路径
-	private static final String UPLOAD_DEVELOPMENT_URL = "D:/react/my_court_query_system/my_court_query_system/public/images/courtInfoImages";
+//	private static final String UPLOAD_DEVELOPMENT_URL = "D:/react/my_court_query_system/my_court_query_system/public/images/courtInfoImages";
+//	部署用
+	private static final String UPLOAD_DEVELOPMENT_URL_AWS = "/app/images";
 //	开发环境下图片上传后，拼接文件名返回给前端的路径前缀
 	private static final String UPLOAD_DEVELOPMENT_URL_SHORT = "/images/courtInfoImages/";
 //	允许上传文件的类型
@@ -86,7 +88,9 @@ public class CourtInfoController {
 //		 尝试存储文件
         try {
             // 创建存储目录（如果不存在）
-            File directory = new File(UPLOAD_DEVELOPMENT_URL);
+//            File directory = new File(UPLOAD_DEVELOPMENT_URL);
+//        	部署用
+            File directory = new File(UPLOAD_DEVELOPMENT_URL_AWS);
             if (!directory.exists()) {
                 directory.mkdirs();
             }

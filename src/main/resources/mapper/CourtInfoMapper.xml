@@ -14,10 +14,10 @@
         SELECT * FROM courtinfo WHERE courtId = #{courtId}
     </select>
 	<select id="getCourtAvgScoreById" resultType="float">
-        SELECT AVG(score) FROM courtEvaluate WHERE courtId = #{courtId}
+        SELECT AVG(score) FROM courtevaluate WHERE courtId = #{courtId}
     </select>
 	<select id="getAllCommentsById" resultType="com.example.demo.entity.CourtEvaluate">
-        SELECT courtComment,score FROM courtEvaluate WHERE courtId = #{courtId} And courtComment is not null ORDER BY num desc
+        SELECT courtComment,score FROM courtevaluate WHERE courtId = #{courtId} And courtComment is not null ORDER BY num desc
     </select>
     <insert id="setCourtEvaluate" parameterType="com.example.demo.entity.CourtEvaluate">
 		INSERT INTO courtevaluate
