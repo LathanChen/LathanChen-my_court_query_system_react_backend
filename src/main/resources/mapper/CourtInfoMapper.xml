@@ -64,6 +64,31 @@
 	    <foreach collection="courtInfoUrls" item="courtInfoUrl" index="index" separator=",">
 		  (#{courtInfoUrl}, #{courtId}, #{courtNames[${index}]})
 		</foreach>
-
     </insert>
+    <select id="getCourtList" resultType="com.example.demo.entity.CourtInfo">
+        SELECT c.*,
+       (
+       SELECT img_url.imgUrl
+        FROM court_info_img_url AS img_url
+        WHERE c.courtId = img_url.courtId
+        LIMIT 1)
+        AS imgUrl
+		FROM courtinfo AS c;
+    </select>
+    <delete  id="deleteCourtInfo" parameterType="int">
+		DELETE FROM courtinfo
+		WHERE courtId =  #{courtId}
+    </delete>
+    <delete  id="deleteCourtImgs" parameterType="int">
+		DELETE FROM court_info_img_url
+		WHERE courtId =  #{courtId}
+    </delete>
+	<update id="updateCourtInfo" parameterType="map">
+		UPDATE courtinfo
+		SET courtAdress = #{courtAdress},
+		courtTelNum = #{courtTelNum},
+		courtStation = #{courtStation},
+		courtFromStationDistance = #{courtFromStationDistance}
+		WHERE courtId = #{courtId}
+	</update>
 </mapper>

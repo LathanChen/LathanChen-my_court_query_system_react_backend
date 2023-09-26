@@ -26,4 +26,12 @@ public interface CourtInfoMapper {
 	int setCourtInfo(CourtInfo courtInfo);
 
 	int setCourtInfoUrls(Map<String,Object> urlAndNames);
+
+	List<CourtInfo> getCourtList();
+
+	boolean deleteCourtInfo(int courtId);
+
+	boolean deleteCourtImgs(int courtId);
+
+	int updateCourtInfo(CourtInfo courtInfo);
 }

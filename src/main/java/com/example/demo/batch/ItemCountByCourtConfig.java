@@ -49,6 +49,12 @@ public class ItemCountByCourtConfig {
 //	事务是一组数据库操作，要么全部成功执行，要么全部失败回滚，以确保数据的一致性和完整性。
 	private final PlatformTransactionManager transactionManager;
 
+//	---------------------------------部署时修改---------------------------------
+	private static final String UPLOAD_DEVELOPMENT_URL = "D:/test";
+//	部署用
+	private static final String UPLOAD_DEVELOPMENT_URL_AWS = "/app/images";
+//	---------------------------------部署时修改---------------------------------
+
 	public ItemCountByCourtConfig(
 			JobBuilderFactory jobBuilderFactory,
 			StepBuilderFactory stepBuilderFactory,
@@ -145,8 +151,8 @@ public class ItemCountByCourtConfig {
 		return new FlatFileItemWriterBuilder<CourtOpenInfo>()
 //				writer的名字
 				.name("toFile")
-//                .resource(new FileSystemResource("D:/test/output.txt")) // 修改为你希望保存文件的路径
-                .resource(new FileSystemResource("/home/ec2-user/backend/output.txt")) // 部署用
+                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL + "/output.txt")) // 修改为你希望保存文件的路径
+//                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL_AWS + "/output.txt")) // 部署用
                 .lineAggregator(new DelimitedLineAggregator<CourtOpenInfo>() {
                     {
 //                    	生成的文件中，字段的分隔符

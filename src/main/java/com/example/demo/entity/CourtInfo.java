@@ -26,4 +26,7 @@ public class CourtInfo {
 //	场地的评分
 	private float score;
 
+//	场地的照片
+	private String imgUrl;
+
 }

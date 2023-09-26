@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,10 +27,14 @@ import com.example.demo.service.CourtInfoService;
 @RestController
 @RequestMapping("/courtinfo")
 public class CourtInfoController {
+
+//	---------------------------------部署时修改---------------------------------
 //	开发环境下图片上传后的存储路径
-//	private static final String UPLOAD_DEVELOPMENT_URL = "D:/react/my_court_query_system/my_court_query_system/public/images/courtInfoImages";
+	private static final String UPLOAD_DEVELOPMENT_URL = "D:/react/my_court_query_system/my_court_query_system/public/images/courtInfoImages";
 //	部署用
 	private static final String UPLOAD_DEVELOPMENT_URL_AWS = "/app/images";
+//	---------------------------------部署时修改---------------------------------
+
 //	开发环境下图片上传后，拼接文件名返回给前端的路径前缀
 	private static final String UPLOAD_DEVELOPMENT_URL_SHORT = "/images/courtInfoImages/";
 //	允许上传文件的类型
@@ -88,9 +93,9 @@ public class CourtInfoController {
 //		 尝试存储文件
         try {
             // 创建存储目录（如果不存在）
-//            File directory = new File(UPLOAD_DEVELOPMENT_URL);
+            File directory = new File(UPLOAD_DEVELOPMENT_URL);
 //        	部署用
-            File directory = new File(UPLOAD_DEVELOPMENT_URL_AWS);
+//            File directory = new File(UPLOAD_DEVELOPMENT_URL_AWS);
             if (!directory.exists()) {
                 directory.mkdirs();
             }
@@ -135,8 +140,47 @@ public class CourtInfoController {
 	public ResponseResult<String> setCourtInfoAndImgs(
 			@RequestBody Map<String,Object> courtInfoAndImgs){
 		System.out.println(courtInfoAndImgs);
-		courtInfoService.setCourtInfoAndImgs(courtInfoAndImgs);
-		return new ResponseResult<String>(200,"文件上传成功！","aaa");
+		if (courtInfoService.setCourtInfoAndImgs(courtInfoAndImgs)) {
+			return new ResponseResult<String>(200,"文件上传成功！","");
+		}
+		else {
+			return new ResponseResult<String>(500,"文件上传失败！","");
+		}
+
+//		return courtInfoService.setCourtInfoAndImgs(courtInfoAndImgs);
+	}
+
+	@RequestMapping(value="/getCourtList",method=RequestMethod.GET)
+	@ResponseBody
+	public List<CourtInfo> getCourtList(){
+		return courtInfoService.getCourtList();
+	}
+
+	@RequestMapping(value="/deleteinfobyid/{courtId}",method=RequestMethod.DELETE)
+	@ResponseBody
+	public boolean deleteCourtInfoById(
+			@PathVariable int courtId){
+		return courtInfoService.deleteCourtInfo(courtId);
+	}
+
+	@RequestMapping(value="/getCourtInfoAndImgsById/{courtId}",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getCourtInfoAndImgsById(
+			@PathVariable int courtId){
+		return courtInfoService.getCourtInfoAndImgsById(courtId);
+	}
+
+	@RequestMapping(value="/updateCourtInfoAndImgs",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseResult<String> updateCourtInfoAndImgs(
+			@RequestBody Map<String,Object> courtInfoAndImgs){
+		System.out.println(courtInfoAndImgs);
+		if (courtInfoService.updateCourtInfoAndImgs(courtInfoAndImgs)) {
+			return new ResponseResult<String>(200,"信息更新成功！","");
+		}
+		else {
+			return new ResponseResult<String>(500,"信息更新失败！","");
+		}
 
 //		return courtInfoService.setCourtInfoAndImgs(courtInfoAndImgs);
 	}

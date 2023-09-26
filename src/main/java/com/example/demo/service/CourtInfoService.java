@@ -21,4 +21,12 @@ public interface CourtInfoService {
 	boolean checkSameCourtName(String courtName);
 
 	boolean setCourtInfoAndImgs(Map<String,Object> urlAndNames);
+
+	List<CourtInfo> getCourtList();
+
+	boolean deleteCourtInfo(int courtId);
+
+	Map<String,Object> getCourtInfoAndImgsById(int courtId);
+
+	boolean updateCourtInfoAndImgs(Map<String,Object> courtInfoAndImgs);
 }

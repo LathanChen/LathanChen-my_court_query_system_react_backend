@@ -120,6 +120,61 @@ public class CourtInfoServiceImpl implements  CourtInfoService{
 		return flg;
 	}
 
+	@Override
+	public List<CourtInfo> getCourtList() {
+		// TODO 自動生成されたメソッド・スタブ
+		return courtInfoMapper.getCourtList();
+	}
+
+	@Override
+	public boolean deleteCourtInfo(int courtId) {
+		// TODO 自動生成されたメソッド・スタブ
+		return courtInfoMapper.deleteCourtInfo(courtId);
+	}
+
+	@Override
+	public Map<String, Object> getCourtInfoAndImgsById(int courtId) {
+		// TODO 自動生成されたメソッド・スタブ
+		Map<String,Object> CourtInfoWithImgs = new HashMap<>();
+		CourtInfo courtinfo = courtInfoMapper.getCourtInfoById(courtId);
+		List<String> imgList = courtInfoMapper.getCourtImgUrls(courtId);
+		CourtInfoWithImgs.put("courtInfos", courtinfo);
+		CourtInfoWithImgs.put("fileList", imgList);
+		return CourtInfoWithImgs;
+	}
+
+	@Override
+	public boolean updateCourtInfoAndImgs(Map<String, Object> courtInfoAndImgs) {
+		// TODO 自動生成されたメソッド・スタブ
+		boolean flg = true;
+		ObjectMapper mapper = new ObjectMapper();
+//		springboot在解析json时将类型转为了linkedHashmap了，而不是CourtInfo实体类
+        // 使用ObjectMapper将LinkedHashMap转换为CourtInfo对象
+        LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) courtInfoAndImgs.get("courtInfos");
+        CourtInfo courtInfo = mapper.convertValue(map, CourtInfo.class);
+		if (courtInfoMapper.updateCourtInfo(courtInfo) == 1 && ((List)courtInfoAndImgs.get("courtInfoUrls")).size() > 0) {
+			courtInfoMapper.deleteCourtImgs(courtInfo.getCourtId());
+			courtInfoAndImgs.put("courtId", courtInfo.getCourtId());
+			if (courtInfoMapper.setCourtInfoUrls(courtInfoAndImgs) >= 0) {
+				System.out.println("1111111111111111111");
+			}
+			else {
+				flg = false;
+			}
+		}
+		else {
+			if (courtInfoMapper.updateCourtInfo(courtInfo) == 1) {
+				flg = true;
+			}
+			else {
+				flg = false;
+			}
+
+		}
+
+		return flg;
+	}
+
 
 
 }
