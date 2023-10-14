@@ -30,5 +30,6 @@
         <mapper resource="mapper/UserMapper.xml"  />
         <mapper resource="mapper/ItemInfoMapper.xml"  />
         <mapper resource="mapper/CourtInfoMapper.xml"  />
+        <mapper resource="mapper/EventInfoMapper.xml"  />
   </mappers>
 </configuration>

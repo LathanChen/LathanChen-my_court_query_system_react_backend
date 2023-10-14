@@ -30,25 +30,27 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 	private CourtOpenInfoMapper courtOpenInfoMapper;
 
 	@Override
-	public PaginationResult<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo) {
+	public PageInfo<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo) {
 		// TODO 自動生成されたメソッド・スタブ
 //		前端的MUI框架，DataGrid的页码计算不知道哪出了问题，ShowQueryData组件的paginationModel.page必须设置为0开始，所以在分页查询的时候只能给每个PageNum加上1
-		int PageNum = courtOpenInfo.getPageNum()+1;
+		int PageNum = courtOpenInfo.getPageNum();
 		int PageSize = courtOpenInfo.getPageSize();
 		PageHelper.startPage(PageNum, PageSize);     // 使用PageHelper进行分页查询获得场地查询结果
 		List<CourtOpenInfo> courtList = courtOpenInfoMapper.getInfo(courtOpenInfo);
 	    PageInfo<CourtOpenInfo> pageInfo = new PageInfo<>(courtList);
 
-	    PaginationResult<CourtOpenInfo> CourtOpenInfoResult = new PaginationResult<>();
-	    CourtOpenInfoResult.setList(pageInfo.getList());
-	    System.out.println(pageInfo.getList());
-	    System.out.println("-------------------");
-	    CourtOpenInfoResult.setTotal(pageInfo.getTotal());
-	    CourtOpenInfoResult.setPageNum(pageInfo.getPageNum());
-	    CourtOpenInfoResult.setPageSize(pageInfo.getPageSize());
-	    CourtOpenInfoResult.setPages(pageInfo.getPages());
-	    CourtOpenInfoResult.setCount(pageInfo.getList().size());
-        return CourtOpenInfoResult;
+//	    PaginationResult<CourtOpenInfo> CourtOpenInfoResult = new PaginationResult<>();
+//	    CourtOpenInfoResult.setList(pageInfo.getList());
+//	    System.out.println(pageInfo);
+//	    System.out.println("-------------------");
+//	    CourtOpenInfoResult.setTotal(pageInfo.getTotal());
+//	    CourtOpenInfoResult.setPageNum(pageInfo.getPageNum());
+//	    CourtOpenInfoResult.setPageSize(pageInfo.getPageSize());
+//	    CourtOpenInfoResult.setPages(pageInfo.getPages());
+//	    CourtOpenInfoResult.setCount(pageInfo.getList().size());
+//	    System.out.println(CourtOpenInfoResult.getList());
+//	    System.out.println("-------------------2");
+        return pageInfo;
 	}
 
 	@Override

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EventInfoMapper">
+	<resultMap id="EventInfoResultMap"
+		type="com.example.demo.entity.EventInfo">
+		<id property="eventInfoId" column="eventInfoId" />
+		<result property="eventItemId" column="eventItemId" />
+		<result property="eventCourtId" column="eventCourtId" />
+		<result property="eventOpenDay" column="eventOpenDay" />
+		<result property="eventOpenTimeZone" column="eventOpenTimeZone" />
+		<result property="eventOpenTime" column="eventOpenTime" />
+		<result property="eventUpdateTime" column="eventUpdateTime" />
+		<result property="eventNote" column="eventNote" />
+		<result property="eventEnrollment" column="eventEnrollment" />
+		<result property="eventMaxEnrollment" column="eventMaxEnrollment" />
+		<result property="eventMaleCost" column="eventMaleCost" />
+		<result property="eventFemaleCost" column="eventFemaleCost" />
+		<association property="itemInfo"
+			javaType="com.example.demo.entity.ItemInfo">
+			<id column="itemInfoId" property='itemInfoId' jdbcType="VARCHAR" />
+			<result column="itemInfoName" property='itemInfoName'
+				jdbcType="VARCHAR" />
+		</association>
+		<association property="courtInfo"
+			javaType="com.example.demo.entity.CourtInfo">
+			<id column="courtId" property='courtId' jdbcType="INTEGER" />
+			<result column="courtName" property='courtName'
+				jdbcType="VARCHAR" />
+			<result column="courtDistance" property='courtDistance'
+				jdbcType="FLOAT" />
+			<result column="courtAdress" property='courtAdress'
+				jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<select id="getEventInfos" resultMap="EventInfoResultMap">
+		SELECT * FROM eventinfo
+		JOIN iteminfo ON eventinfo.eventItemId = iteminfo.itemInfoId
+		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
+		<where>
+			<if test="eventOpenDay != null">
+				(eventOpenDay = #{eventOpenDay})
+			</if>
+			<if test="eventOpenTimeZone != '' and eventOpenTimeZone != null">
+				AND (eventOpenTimeZone = #{eventOpenTimeZone})
+			</if>
+			<if test="eventItemId != '' and eventOpenTimeZone != null">
+				AND (eventItemId = #{eventItemId})
+			</if>
+		</where>
+	</select>
+</mapper>

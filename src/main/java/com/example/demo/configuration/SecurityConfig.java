@@ -84,6 +84,7 @@ public class SecurityConfig {
                         .antMatchers("/user/register").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/iteminfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/courtinfo/*").permitAll()//不需要进行身份验证的接口,*表示通配符
+                        .antMatchers("/eventInfo/*").permitAll()//不需要进行身份验证的接口,*表示通配符
 //                        .antMatchers("/courtinfo/getcourtnames").permitAll()//不需要进行身份验证的接口
 //                        注意：对于url变量的地址，需要这么配置放行
 //                        .antMatchers("/courtOpenInfo/getinfobyid/{courtOpenItemId}").permitAll()//不需要进行身份验证的接口

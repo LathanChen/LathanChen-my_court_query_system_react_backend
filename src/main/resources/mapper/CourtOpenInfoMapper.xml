@@ -47,10 +47,10 @@
         <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
                  AND courtOpenWeekday = #{courtOpenWeekday}
         </if>
-        <if test="courtOpenTimeZone != ''">
+        <if test="courtOpenTimeZone != '' and courtOpenWeekday != null">
                  AND courtOpenTimeZone = #{courtOpenTimeZone}
         </if>
-        <if test="courtOpenItemId != 0">
+        <if test="courtOpenItemId != 0 and courtOpenWeekday != null">
                  AND courtOpenItemId = #{courtOpenItemId}
         </if>
         </where>

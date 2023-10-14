@@ -16,6 +16,7 @@ import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.PaginationResult;
 import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.CourtOpenInfoService;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 //to do:指定每个页面的访问权限
@@ -27,7 +28,10 @@ public class CourtOpenInfoController {
 
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
-	public PaginationResult<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
+	public PageInfo<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
+		System.out.println("6666666666666666666");
+		System.out.println(courtOpenInfoService.getInfo(courtOpenInfo));
+		System.out.println("7777777777777777777777");
 		return courtOpenInfoService.getInfo(courtOpenInfo);
 	}
 

@@ -6,10 +6,11 @@ import java.util.Map;
 import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.PaginationResult;
 import com.example.demo.entity.ResponseResult;
+import com.github.pagehelper.PageInfo;
 
 public interface CourtOpenInfoService {
 
-	PaginationResult<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo);
+	PageInfo<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo);
 
 	ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo);
 
