@@ -39,6 +39,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //解析token
         String userid;
         try {
+//        	解析TOKEN中的数据，如果已过期或解析过程中存在错误，那么就抛出异常
             Claims claims = JwtUtil.parseJWT(token);
             userid = claims.getSubject();
         }

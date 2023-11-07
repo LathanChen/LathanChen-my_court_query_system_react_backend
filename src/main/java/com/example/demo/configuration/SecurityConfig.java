@@ -85,6 +85,15 @@ public class SecurityConfig {
                         .antMatchers("/iteminfo").permitAll()//不需要进行身份验证的接口
                         .antMatchers("/courtinfo/*").permitAll()//不需要进行身份验证的接口,*表示通配符
                         .antMatchers("/eventInfo/*").permitAll()//不需要进行身份验证的接口,*表示通配符
+                        .antMatchers("/hello").permitAll()//不需要进行身份验证的接口,*表示通配符
+                        .antMatchers("/swagger-ui/*").permitAll()
+                        .antMatchers("/webjars/**").permitAll()
+                        .antMatchers("/v3/**").permitAll()
+                        .antMatchers("/swagger-resources/**").permitAll()
+                        .antMatchers("/eventEntryInfo/**").permitAll()
+//                        .antMatchers("/csrf").permitAll()
+//                        .antMatchers("/").permitAll()
+//                        .antMatchers("/swagger-ui/*").permitAll()//不需要进行身份验证的接口,*表示通配符
 //                        .antMatchers("/courtinfo/getcourtnames").permitAll()//不需要进行身份验证的接口
 //                        注意：对于url变量的地址，需要这么配置放行
 //                        .antMatchers("/courtOpenInfo/getinfobyid/{courtOpenItemId}").permitAll()//不需要进行身份验证的接口
@@ -98,7 +107,9 @@ public class SecurityConfig {
         .logoutSuccessHandler(logoutSuccessHandler); // 登出成功处理器
         //定义filter的先后顺序，保证 jwtFilter比用户验证的过滤器先执行
 
+//        在一般的用户密码验证器之前，增加一个TOKEN的验证器，这样在用户登录之后可以先对TOKEN进行验证
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         //自定义异常捕获机制
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
         return http.build();

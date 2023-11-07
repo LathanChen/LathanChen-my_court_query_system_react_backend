@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -107,7 +108,15 @@ public class CourtInfoServiceImpl implements  CourtInfoService{
         CourtInfo courtInfo = mapper.convertValue(map, CourtInfo.class);
 		if (courtInfoMapper.setCourtInfo(courtInfo) == 1) {
 			urlAndNames.put("courtId", courtInfo.getCourtId());
-			if (courtInfoMapper.setCourtInfoUrls(urlAndNames) >= 0) {
+//			System.out.println("7777777777777777777777777777777777");
+//			System.out.println("7777777777777777777777777777777777");
+//			System.out.println("7777777777777777777777777777777777");
+//			System.out.println("7777777777777777777777777777777777");
+//			System.out.println("7777777777777777777777777777777777");
+//			System.out.println(urlAndNames.get("courtInfoUrls").getClass().getName());
+			ArrayList<String> list = (ArrayList<String>) urlAndNames.get("courtInfoUrls");
+			if ((!list.isEmpty() && courtInfoMapper.setCourtInfoUrls(urlAndNames) >= 0) ||
+					list.isEmpty()) {
 			}
 			else {
 				flg = false;

@@ -53,12 +53,15 @@ public class EventInfo {
 //	活动费用（女性）
 	private int eventFemaleCost;
 
-////	batch追加，相同条件（如场地相同）下的明细数量
+//  batch追加，相同条件（如场地相同）下的明细数量
 //	private int eventInfos;
 //
-////	分页追加，页码
+//  分页追加，页码
 	private int PageNum;
 
 //	分页追加，每页明细的数量
 	private int PageSize;
+
+//	追加,用于确认当前登录用户是否已报名该活动
+	private boolean isRegistered;
 }

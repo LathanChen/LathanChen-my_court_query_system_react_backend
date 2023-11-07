@@ -10,7 +10,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface CourtOpenInfoService {
 
-	PageInfo<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo);
+	ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo);
 
 	ArrayList<CourtOpenInfo> getInfoByAdmin(CourtOpenInfo courtOpenInfo);
 

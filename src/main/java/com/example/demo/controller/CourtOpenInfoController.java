@@ -28,7 +28,7 @@ public class CourtOpenInfoController {
 
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
-	public PageInfo<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
+	public ArrayList<CourtOpenInfo> getInfo(CourtOpenInfo courtOpenInfo){
 		System.out.println("6666666666666666666");
 		System.out.println(courtOpenInfoService.getInfo(courtOpenInfo));
 		System.out.println("7777777777777777777777");

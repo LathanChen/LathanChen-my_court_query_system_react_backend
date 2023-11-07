@@ -17,20 +17,20 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements UserService {
 	@Autowired
-    private UserMapper userMapper;
+	private UserMapper userMapper;
 
 	@Autowired
-    private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public boolean registerUser(User user) {
 		boolean registerFlg = false;
 		User userDB = userMapper.getUserInfoByName(user.getUserName());
-		if	(userDB == null) {
+		if (userDB == null) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			if(userMapper.registerUser(user) > 0) {
+			if (userMapper.registerUser(user) > 0) {
 				registerFlg = true;
 				return registerFlg;
 			}
@@ -43,31 +43,28 @@ public class UserServiceImpl implements  UserService{
 		// TODO 自動生成されたメソッド・スタブ
 		ArrayList<String> list = new ArrayList<>();
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String userRole = "";
-		        // 判断当前用户是否已经认证
-		        if (authentication.isAuthenticated()) {
-		            // 获取用户详细信息
-		        	LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+		String userRole = "";
+		// 判断当前用户是否已经认证
+		if (authentication.isAuthenticated()) {
+			// 获取用户详细信息
+			LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
-		        	System.out.println("userPermissions");
-		        	System.out.println("userPermissions");
-		        	System.out.println("userPermissions");
-		        	System.out.println("userPermissions");
-		        	System.out.println("userPermissions");
-		        	System.out.println("userPermissions");
-		        	System.out.println(loginUser);
+			System.out.println("userPermissions");
+			System.out.println("userPermissions");
+			System.out.println("userPermissions");
+			System.out.println("userPermissions");
+			System.out.println("userPermissions");
+			System.out.println("userPermissions");
+			System.out.println(loginUser);
 
-		            // 获取用户角色信息
-		            userRole = loginUser.getAuthorities().stream()
-		                    .map(Object::toString)
-		                    .findFirst()
-		                    .orElse("");
-		            list.add(userRole);
-		            if (userRole.isEmpty()) {
-		            	return new ResponseResult<List>(401,"用户无授权",list);
-		            }
+			// 获取用户角色信息
+			userRole = loginUser.getAuthorities().stream().map(Object::toString).findFirst().orElse("");
+			list.add(userRole);
+			if (userRole.isEmpty()) {
+				return new ResponseResult<List>(401, "用户无授权", list);
+			}
+		}
+		ResponseResult<List> responseResult = new ResponseResult(200, "认证通过", list);
+		return responseResult;
 	}
-		        ResponseResult<List> responseResult = new ResponseResult(200,"认证通过",list);
-                return responseResult;
-}
 }

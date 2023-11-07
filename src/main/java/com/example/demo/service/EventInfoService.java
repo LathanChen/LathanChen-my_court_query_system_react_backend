@@ -6,5 +6,5 @@ import com.example.demo.entity.EventInfo;
 import com.github.pagehelper.PageInfo;
 
 public interface EventInfoService {
-	PageInfo<EventInfo> getEventInfos(EventInfo eventInfo);
+	ArrayList<EventInfo> getEventInfos(EventInfo eventInfo);
 }

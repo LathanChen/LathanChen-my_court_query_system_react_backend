@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 
+import springfox.documentation.oas.annotations.EnableOpenApi;
+
 @SpringBootApplication(exclude = PageHelperAutoConfiguration.class)
 @MapperScan("com.example.demo.mapper")
 public class MyCourtQuerySystemWithReactApplication {

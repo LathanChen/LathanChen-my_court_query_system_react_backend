@@ -20,7 +20,7 @@ public class EventInfoController {
 
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
-	public PageInfo<EventInfo> getEventInfos(EventInfo eventInfo) {
+	public ArrayList<EventInfo> getEventInfos(EventInfo eventInfo) {
 		System.out.println(eventInfo);
 		return eventInfoService.getEventInfos(eventInfo);
 	}

@@ -2,34 +2,96 @@ package com.example.demo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.CourtOpenInfo;
+import com.example.demo.entity.EventEntryInfo;
 import com.example.demo.entity.EventInfo;
+import com.example.demo.entity.LoginUser;
+import com.example.demo.mapper.EventEntryInfoMapper;
 import com.example.demo.mapper.EventInfoMapper;
 import com.example.demo.service.EventInfoService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 @Service
-public class EventInfoServiceImpl implements EventInfoService{
+public class EventInfoServiceImpl implements EventInfoService {
 
 	@Autowired
 	private EventInfoMapper eventInfoMapper;
 
+	@Autowired
+	private EventEntryInfoMapper eventEntryInfoMapper;
+
 	@Override
-	public PageInfo<EventInfo> getEventInfos(EventInfo eventInfo) {
+	public ArrayList<EventInfo> getEventInfos(EventInfo eventInfo) {
 		// TODO 自動生成されたメソッド・スタブ
-		int PageNum = eventInfo.getPageNum();
-		int PageSize = eventInfo.getPageSize();
+		List<EventInfo> _eventList = eventInfoMapper.getEventInfos(eventInfo);
 
-		PageHelper.startPage(PageNum, PageSize);     // 使用PageHelper进行分页查询获得场地查询结果
-		List<EventInfo> eventList = eventInfoMapper.getEventInfos(eventInfo);
-	    PageInfo<EventInfo> pageInfo = new PageInfo<>(eventList);
+//		使用Stream流式运算取出查询结果中的所有eventInfoId
+		List<Integer> eventIdList = _eventList.stream().map(EventInfo::getEventInfoId).collect(Collectors.toList());
+		System.out.println(eventIdList);
 
-		return pageInfo;
+//		Todo 查询每个ID在报名情况表单里的数量，即实际报名人数
+
+//		获取报名情况表中，每个活动的报名用户的id
+		List<EventEntryInfo> eventIdAndEntryNums = eventEntryInfoMapper.getCountByEventIDs(eventIdList);
+
+//		Map<Integer,Integer> entryCountMap = eventIdAndEntryNums.stream()
+//			    .collect(Collectors.toMap(EventEntryInfo::getEventInfoId, EventEntryInfo::getEventEntryNums));
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//		System.out.println("77777777777777777");
+//		System.out.println("77777777777777777");
+		System.out.println(authentication);
+		// 判断当前用户是否匿名用户，即是否是已登录用户
+		// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			// 获取用户详细信息
+//			System.out.println("77777777777777777");
+//			System.out.println("77777777777777777");
+			LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+			System.out.println(loginUser);
+			Long userId = loginUser.getUser().getId();
+			_eventList.forEach(_eventInfo -> {
+				eventIdAndEntryNums.forEach(_eventEntryInfo -> {
+//					如果当前活动信息id和活动信息报名表中的id相同
+					if(_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
+//						将该活动信息中活动发起人填写的已报名人数和活动信息报名表中现有的报名人数相加，获得实际最新的报名人数
+						_eventInfo.setEventEnrollment(_eventInfo.getEventEnrollment() + 1);
+//						如果本活动报名信息的报名人员中存在当前登录的用户
+						if(_eventEntryInfo.getUserId() == userId) {
+//							向前端传递已报名信息，按钮设置为不可用
+							_eventInfo.setRegistered(true);
+						}
+					}
+				});
+			});
+		}
+
+//		当前用户认证未通过或是路人报名的情况
+		else {
+			_eventList.forEach(_eventInfo -> {
+				eventIdAndEntryNums.forEach(_eventEntryInfo -> {
+//					如果当前活动信息id和活动信息报名表中的id相同
+					if(_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
+//						将该活动信息中活动发起人填写的已报名人数和活动信息报名表中现有的报名人数相加，获得实际最新的报名人数
+						_eventInfo.setEventEnrollment(_eventInfo.getEventEnrollment() + 1);
+					}
+				});
+			});
+		}
+//		System.out.println("11111111111111111");
+//		System.out.println("11111111111111111");
+//		System.out.println("11111111111111111");
+		System.out.println(_eventList);
+		ArrayList<EventInfo> eventList = new ArrayList<>(_eventList);
+
+		return eventList;
 	}
 
 }

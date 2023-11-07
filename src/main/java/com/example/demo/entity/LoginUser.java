@@ -53,6 +53,10 @@ public class LoginUser implements UserDetails {
         return user.getPassword();
     }
 
+    public long getId() {
+    	return user.getId();
+    }
+
     @Override
     public String getUsername() {
         return user.getUserName();
