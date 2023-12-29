@@ -151,8 +151,8 @@ public class ItemCountByCourtConfig {
 		return new FlatFileItemWriterBuilder<CourtOpenInfo>()
 //				writer的名字
 				.name("toFile")
-                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL + "/output.txt")) // 修改为你希望保存文件的路径
-//                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL_AWS + "/output.txt")) // 部署用
+//                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL + "/output.txt")) // 修改为你希望保存文件的路径
+                .resource(new FileSystemResource(UPLOAD_DEVELOPMENT_URL_AWS + "/output.txt")) // 部署用
                 .lineAggregator(new DelimitedLineAggregator<CourtOpenInfo>() {
                     {
 //                    	生成的文件中，字段的分隔符

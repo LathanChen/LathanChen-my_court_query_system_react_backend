@@ -93,9 +93,9 @@ public class CourtInfoController {
 //		 尝试存储文件
         try {
             // 创建存储目录（如果不存在）
-            File directory = new File(UPLOAD_DEVELOPMENT_URL);
+//            File directory = new File(UPLOAD_DEVELOPMENT_URL);
 //        	部署用
-//            File directory = new File(UPLOAD_DEVELOPMENT_URL_AWS);
+            File directory = new File(UPLOAD_DEVELOPMENT_URL_AWS);
             if (!directory.exists()) {
                 directory.mkdirs();
             }

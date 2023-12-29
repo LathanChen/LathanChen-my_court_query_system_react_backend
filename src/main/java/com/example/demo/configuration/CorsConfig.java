@@ -16,12 +16,14 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
       // 设置允许跨域的路径，也就是允许前端向哪些地址发送跨域请求
         registry.addMapping("/**")
-//                // 设置允许跨域请求的域名，也就是前端项目的地址
+////                // 设置允许跨域请求的域名，也就是前端项目的地址
                 .allowedOriginPatterns("http://localhost:3000")
 //        		部署用
 //                .allowedOrigins("http://35.78.202.21")
 //        		部署用
 //                .allowedOrigins("http://54.238.131.149")
+//        		部署用
+//                .allowedOrigins("http://52.199.19.83")
 //              部署用（尝试，没成功）
 //                .allowedOriginPatterns("*")
                 // 是否允许cookie
