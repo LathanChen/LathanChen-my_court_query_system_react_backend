@@ -27,6 +27,7 @@ public class CourtInfo {
 	private float score;
 
 //	场地的照片
+// merge test
 	private String imgUrl;
 
 }
