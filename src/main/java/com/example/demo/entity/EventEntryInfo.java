@@ -24,4 +24,16 @@ public class EventEntryInfo {
 //	是否取消报名
 	private boolean isCancel;
 
+//	对应的活动信息
+	private EventInfo eventInfo;
+
+//	活动的类型信息
+	private ItemInfo itemInfo;
+
+//	活动主办方信息
+	private Organizer organizer;
+
+//	场地信息
+	private CourtInfo courtInfo;
+
 }

@@ -14,6 +14,7 @@ import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.EventEntryInfo;
 import com.example.demo.entity.EventInfo;
 import com.example.demo.entity.LoginUser;
+import com.example.demo.entity.ResponseResult;
 import com.example.demo.mapper.EventEntryInfoMapper;
 import com.example.demo.mapper.EventInfoMapper;
 import com.example.demo.service.EventInfoService;
@@ -28,13 +29,20 @@ public class EventInfoServiceImpl implements EventInfoService {
 	private EventEntryInfoMapper eventEntryInfoMapper;
 
 	@Override
-	public ArrayList<EventInfo> getEventInfos(EventInfo eventInfo) {
+	public ResponseResult getEventInfos(EventInfo eventInfo) {
 		// TODO 自動生成されたメソッド・スタブ
 		List<EventInfo> _eventList = eventInfoMapper.getEventInfos(eventInfo);
 
 //		使用Stream流式运算取出查询结果中的所有eventInfoId
-		List<Integer> eventIdList = _eventList.stream().map(EventInfo::getEventInfoId).collect(Collectors.toList());
-		System.out.println(eventIdList);
+		List<Integer> eventIdList;
+		if (_eventList.size() > 0) {
+			eventIdList = _eventList.stream().map(EventInfo::getEventInfoId).collect(Collectors.toList());
+			System.out.println(eventIdList);
+		}
+		else {
+			ResponseResult responseResult = new ResponseResult(404,"没有查询到数据",null);
+			return responseResult;
+		}
 
 //		Todo 查询每个ID在报名情况表单里的数量，即实际报名人数
 
@@ -91,7 +99,8 @@ public class EventInfoServiceImpl implements EventInfoService {
 		System.out.println(_eventList);
 		ArrayList<EventInfo> eventList = new ArrayList<>(_eventList);
 
-		return eventList;
+		ResponseResult<List> responseResult = new ResponseResult(200,"查询成功",eventList);
+		return responseResult;
 	}
 
 }

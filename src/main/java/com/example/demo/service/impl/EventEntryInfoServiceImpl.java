@@ -1,16 +1,20 @@
 package com.example.demo.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.EventEntryInfo;
 import com.example.demo.entity.LoginUser;
 import com.example.demo.entity.ResponseResult;
+import com.example.demo.entity.User;
 import com.example.demo.mapper.EventEntryInfoMapper;
 import com.example.demo.mapper.EventInfoMapper;
 import com.example.demo.service.EventEntryInfoService;
@@ -64,5 +68,24 @@ public class EventEntryInfoServiceImpl implements EventEntryInfoService {
 				return new ResponseResult(500, "添加失败", e);
 			}
 		}
+	}
+
+	@Override
+	@Transactional
+	public ResponseResult getEventEntryInfosByUserId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			// 获取用户详细信息
+			LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+			List<EventEntryInfo> eventEntryInfos = eventEntryInfoMapper.getEventEntryInfosByUserId(loginUser.getUser().getId().intValue());
+			return !eventEntryInfos.isEmpty() ? new ResponseResult(200,eventEntryInfos) : new ResponseResult(200,"参加履歴情報がない");
+		}else {
+			return new ResponseResult(200,"ログインしないため、ログインしてから参照してください");
+		}
+
+
+
+
 	}
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,12 @@ public class EventEntryInfoController {
 	public ResponseResult setInfo(@RequestBody EventEntryInfo eventEntryInfo){
 //		System.out.print(courtOpenInfo);
 		return eventEntryInfoService.setEventEntryInfo(eventEntryInfo);
+	}
+
+	@RequestMapping(value="/getEventEntryInfosByUser",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseResult getEventEntryInfosByUser(){
+		return eventEntryInfoService.getEventEntryInfosByUserId();
 	}
 
 }

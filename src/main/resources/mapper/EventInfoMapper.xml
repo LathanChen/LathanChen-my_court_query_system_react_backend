@@ -43,7 +43,7 @@
 			<if test="eventOpenTimeZone != '' and eventOpenTimeZone != null">
 				AND (eventOpenTimeZone = #{eventOpenTimeZone})
 			</if>
-			<if test="eventItemId != '' and eventOpenTimeZone != null">
+			<if test="eventItemId != '' and eventItemId != null">
 				AND (eventItemId = #{eventItemId})
 			</if>
 		</where>

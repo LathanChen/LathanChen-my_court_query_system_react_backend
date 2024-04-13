@@ -31,6 +31,10 @@ public class User implements Serializable {
     */
     private String nickName;
     /**
+     * 昵称
+     */
+    private int age;
+    /**
     * 密码
     */
     private String password;

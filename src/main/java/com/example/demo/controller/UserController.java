@@ -30,5 +30,14 @@ public class UserController {
     public ResponseResult userPermissions() {
     	return userService.userPermissions();
     }
+
+//    用户登录后查询用户信息
+    @RequestMapping(value="/UserInfo", method=RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult fecthUserInfo() {
+    	return userService.fecthUserInfo();
+    }
+
+
 }
 

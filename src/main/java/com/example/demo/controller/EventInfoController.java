@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.EventInfo;
+import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.EventInfoService;
 import com.github.pagehelper.PageInfo;
 
@@ -20,7 +21,7 @@ public class EventInfoController {
 
 	@RequestMapping(value="/getInfo",method=RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<EventInfo> getEventInfos(EventInfo eventInfo) {
+	public ResponseResult getEventInfos(EventInfo eventInfo) {
 		System.out.println(eventInfo);
 		return eventInfoService.getEventInfos(eventInfo);
 	}

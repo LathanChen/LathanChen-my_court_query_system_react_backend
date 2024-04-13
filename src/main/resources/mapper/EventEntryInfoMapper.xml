@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.EventEntryInfoMapper">
+	<resultMap id="getEventEntryInfosByUserIdMap" type="com.example.demo.entity.EventEntryInfo">
+	<result column="entryTime" property="entryTime" jdbcType="TIMESTAMP" />
+	<association property="eventInfo" javaType="com.example.demo.entity.EventInfo">
+		<result column="eventOpenDay" property="eventOpenDay" jdbcType="DATE" />
+	</association>
+	<association property="organizer" javaType="com.example.demo.entity.Organizer">
+		<result column="organizerName" property="organizerName" jdbcType="VARCHAR" />
+	</association>
+	<association property="itemInfo" javaType="com.example.demo.entity.ItemInfo">
+		<result column="itemInfoName" property="itemInfoName" jdbcType="VARCHAR" />
+	</association>
+	<association property="courtInfo" javaType="com.example.demo.entity.CourtInfo">
+		<result column="courtName" property="courtName" jdbcType="VARCHAR" />
+	</association>
+  	</resultMap>
+
 	<select id="getCountByEventIDs"
 		resultType="com.example.demo.entity.EventEntryInfo">
 		SELECT eventInfoId,userId FROM event_entry_info
@@ -11,6 +27,7 @@
 		</foreach>
 		ORDER BY eventInfoId
 	</select>
+
 	<insert id="setEventEntryInfo" parameterType="EventEntryInfo">
 		INSERT INTO event_entry_info
 		(eventInfoId,
@@ -24,4 +41,14 @@
 		#{entryTime}
 		)
 	</insert>
+
+	<select id="getEventEntryInfosByUserId" resultMap="getEventEntryInfosByUserIdMap">
+		SELECT event_entry_info.entryTime,eventinfo.eventOpenDay,event_entry_info.eventInfoId,organizer_master.organizerName,iteminfo.itemInfoName,courtinfo.courtName
+		FROM event_entry_info
+		LEFT JOIN eventinfo ON event_entry_info.eventInfoId = eventinfo.eventInfoId
+		JOIN organizer_master ON eventinfo.organizerId = organizer_master.organizerId
+		JOIN iteminfo ON eventinfo.eventItemId = iteminfo.itemInfoId
+		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
+		WHERE event_entry_info.userId = #{userId}
+	</select>
 </mapper>
