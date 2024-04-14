@@ -71,4 +71,32 @@
 		e.eventMaxEnrollment)
 		group by iteminfo.itemInfoName;
 	</select>
+
+	<select
+		id="getAvailableEventsOrganizerNameAndMemberNumsByItemId"
+		resultType="map">
+		SELECT
+		e.eventInfoId,
+		organizer_master.organizerName,
+		iteminfo.itemInfoName,
+		COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment AS entryCount,
+		e.eventMaxEnrollment
+		FROM eventinfo e
+		LEFT JOIN (
+		SELECT
+		eventInfoId,
+		COUNT(*) AS eventEntryCount
+		FROM event_entry_info
+		GROUP BY eventInfoId
+		) ei ON ei.eventInfoId = e.eventInfoId
+		left join iteminfo
+		on e.eventItemId = iteminfo.itemInfoId
+		left join organizer_master
+		on e.organizerId = organizer_master.organizerId
+		where e.eventOpenDay>= CURDATE()
+		and e.eventItemId = #{eventItemId}
+		AND (COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment &lt;=
+		e.eventMaxEnrollment)
+		order by iteminfo.itemInfoName;
+	</select>
 </mapper>

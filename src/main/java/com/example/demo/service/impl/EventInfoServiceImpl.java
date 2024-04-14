@@ -112,4 +112,10 @@ public class EventInfoServiceImpl implements EventInfoService {
 		return new ResponseResult(200,"查询成功",availableEventsList);
 	}
 
+	@Override
+	public ResponseResult getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId) {
+		List vailableEventsOrganizerNameAndMemberNumByItemIdList = eventInfoMapper.getAvailableEventsOrganizerNameAndMemberNumsByItemId(eventItemId);
+		return new ResponseResult(200,"查询成功",vailableEventsOrganizerNameAndMemberNumByItemIdList);
+	}
+
 }

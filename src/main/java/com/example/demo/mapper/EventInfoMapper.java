@@ -10,4 +10,6 @@ public interface EventInfoMapper {
 	ArrayList<EventInfo> getEventInfos(EventInfo eventInfo);
 
 	List<Map<String,Object>> getAvailableEvents();
+
+	List<Map<String,Object>> getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId);
 }
