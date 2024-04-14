@@ -25,4 +25,10 @@ public class EventInfoController {
 		System.out.println(eventInfo);
 		return eventInfoService.getEventInfos(eventInfo);
 	}
+
+	@RequestMapping(value="/availableEvents",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseResult getAvailableEvents() {
+		return eventInfoService.getAvailableEvents();
+	}
 }

@@ -12,7 +12,8 @@
 		<result property="eventUpdateTime" column="eventUpdateTime" />
 		<result property="eventNote" column="eventNote" />
 		<result property="eventEnrollment" column="eventEnrollment" />
-		<result property="eventMaxEnrollment" column="eventMaxEnrollment" />
+		<result property="eventMaxEnrollment"
+			column="eventMaxEnrollment" />
 		<result property="eventMaleCost" column="eventMaleCost" />
 		<result property="eventFemaleCost" column="eventFemaleCost" />
 		<association property="itemInfo"
@@ -26,7 +27,7 @@
 			<id column="courtId" property='courtId' jdbcType="INTEGER" />
 			<result column="courtName" property='courtName'
 				jdbcType="VARCHAR" />
-			<result column="courtDistance" property='courtDistance'
+			<result column="courtDistance" property='courtDiFstance'
 				jdbcType="FLOAT" />
 			<result column="courtAdress" property='courtAdress'
 				jdbcType="VARCHAR" />
@@ -34,8 +35,10 @@
 	</resultMap>
 	<select id="getEventInfos" resultMap="EventInfoResultMap">
 		SELECT * FROM eventinfo
-		JOIN iteminfo ON eventinfo.eventItemId = iteminfo.itemInfoId
-		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
+		JOIN iteminfo ON eventinfo.eventItemId =
+		iteminfo.itemInfoId
+		JOIN courtinfo ON eventinfo.eventCourtId =
+		courtinfo.courtId
 		<where>
 			<if test="eventOpenDay != null">
 				(eventOpenDay = #{eventOpenDay})
@@ -47,5 +50,25 @@
 				AND (eventItemId = #{eventItemId})
 			</if>
 		</where>
+	</select>
+
+	<select id="getAvailableEvents" resultType="map">
+		SELECT
+		count(e.eventInfoId) as eventCount,
+		iteminfo.itemInfoName
+		FROM eventinfo e
+		LEFT JOIN (
+		SELECT
+		eventInfoId,
+		COUNT(*) AS eventEntryCount
+		FROM event_entry_info
+		GROUP BY eventInfoId
+		) ei ON ei.eventInfoId = e.eventInfoId
+		left join iteminfo
+		on e.eventItemId = iteminfo.itemInfoId
+		where e.eventOpenDay>= CURDATE()
+		AND (COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment &lt;=
+		e.eventMaxEnrollment)
+		group by iteminfo.itemInfoName;
 	</select>
 </mapper>

@@ -10,6 +10,8 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.EventEntryInfo;
 import com.example.demo.entity.EventInfo;
@@ -20,6 +22,7 @@ import com.example.demo.mapper.EventInfoMapper;
 import com.example.demo.service.EventInfoService;
 
 @Service
+@Transactional
 public class EventInfoServiceImpl implements EventInfoService {
 
 	@Autowired
@@ -101,6 +104,12 @@ public class EventInfoServiceImpl implements EventInfoService {
 
 		ResponseResult<List> responseResult = new ResponseResult(200,"查询成功",eventList);
 		return responseResult;
+	}
+
+	@Override
+	public ResponseResult getAvailableEvents() {
+		List availableEventsList = eventInfoMapper.getAvailableEvents();
+		return new ResponseResult(200,"查询成功",availableEventsList);
 	}
 
 }

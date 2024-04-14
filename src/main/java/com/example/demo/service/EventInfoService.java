@@ -8,4 +8,6 @@ import com.github.pagehelper.PageInfo;
 
 public interface EventInfoService {
 	ResponseResult getEventInfos(EventInfo eventInfo);
+
+	ResponseResult getAvailableEvents();
 }

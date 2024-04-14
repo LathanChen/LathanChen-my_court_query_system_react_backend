@@ -20,6 +20,7 @@ import com.example.demo.mapper.EventInfoMapper;
 import com.example.demo.service.EventEntryInfoService;
 
 @Service
+@Transactional
 public class EventEntryInfoServiceImpl implements EventEntryInfoService {
 
 	@Autowired
@@ -71,7 +72,6 @@ public class EventEntryInfoServiceImpl implements EventEntryInfoService {
 	}
 
 	@Override
-	@Transactional
 	public ResponseResult getEventEntryInfosByUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
