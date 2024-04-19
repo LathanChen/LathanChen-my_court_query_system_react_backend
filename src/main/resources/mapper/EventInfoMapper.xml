@@ -52,6 +52,7 @@
 		</where>
 	</select>
 
+	<!-- 查找举办日为本日及之后的报名人数未满的活动 -->
 	<select id="getAvailableEvents" resultType="map">
 		SELECT
 		count(e.eventInfoId) as eventCount,
@@ -72,6 +73,7 @@
 		group by iteminfo.itemInfoName;
 	</select>
 
+	<!-- 查找参加日之前的指定活动的报名情况,输出结果为主办方名称、报名上限、现在报名人数 -->
 	<select
 		id="getAvailableEventsOrganizerNameAndMemberNumsByItemId"
 		resultType="map">

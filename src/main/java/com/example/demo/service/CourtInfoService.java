@@ -6,6 +6,7 @@ import java.util.Map;
 import com.example.demo.entity.CourtEvaluate;
 import com.example.demo.entity.CourtInfo;
 import com.example.demo.entity.PaginationResult;
+import com.example.demo.entity.ResponseResult;
 
 public interface CourtInfoService {
 	List<CourtInfo> getCourts();

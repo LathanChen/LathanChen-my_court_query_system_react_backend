@@ -1,96 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.CourtOpenInfoMapper">
-	<resultMap id="CourtOpenInfoResultMap" type="com.example.demo.entity.CourtOpenInfo">
-	    <!-- 定义结果映射 -->
-	    <!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样-->
-	    <!--column和property必须都写？-->
-	    <id column="courtOpenInfoId" property="courtOpenInfoId" jdbcType="INTEGER" />
-	    <result column="courtOpenItemId" property="courtOpenItemId" jdbcType="VARCHAR" />
-	    <result column="courtOpenCourtId" property="courtOpenCourtId" jdbcType="VARCHAR" />
-	    <result column="courtOpenWeekday" property="courtOpenWeekday" jdbcType="VARCHAR" />
-	    <result column="courtOpenWeekNum" property="courtOpenWeekNum" jdbcType="VARCHAR" />
-	    <result column="courtOpenTimeZone" property="courtOpenTimeZone" jdbcType="VARCHAR" />
-	    <result column="courtOpenTime" property="courtOpenTime" jdbcType="VARCHAR" />
-	    <result column="courtOpenUpdateTime" property="courtOpenUpdateTime" jdbcType="TIMESTAMP" />
-	    <result column="courtOpenNote" property="courtOpenNote" jdbcType="VARCHAR" />
-	    <result column="countInfos" property="countInfos" jdbcType="INTEGER" />
-	    <!--association代表一对一的关系，这里CourtOpenInfo使用了成员属性ItemInfo和CourtInfo（两者都是对象）
-	    来存储使用SQL的JOIN ON语法查询到的另外两张表的数据，需要分别设置这两张表的字段和这两个对象的对应关系-->
-	    <association property="itemInfo" javaType="com.example.demo.entity.ItemInfo">
-	    	<id column="itemInfoId" property='itemInfoId' jdbcType="VARCHAR" />
-	    	<result column="itemInfoName" property='itemInfoName' jdbcType="VARCHAR" />
-	    </association>
-	    <association property="courtInfo" javaType="com.example.demo.entity.CourtInfo">
-	    	<id column="courtId" property='courtId' jdbcType="INTEGER" />
-	    	<result column="courtName" property='courtName' jdbcType="VARCHAR" />
-	    	<result column="courtDistance" property='courtDistance' jdbcType="FLOAT" />
-	    	<result column="courtAdress" property='courtAdress' jdbcType="VARCHAR" />
-	    </association>
-    <!-- 其他属性的映射... -->
-  	</resultMap>
-    <select id="getInfo" resultMap="CourtOpenInfoResultMap">
-        SELECT * FROM courtopeninfo
-        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
-        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
-        <!--踩坑记录：Java会为entity对象的int成员属性设定默认值为0，之前的写法是<if test="courtOpenWeekday > -1">
-        （因为前台传过来的值只会是1，2，3）,在前端页面未填写courtOpenWeekday的情况下，会导致mybatis将SQL文写成courtOpenWeekday = 0的形式，
-        所以数据的查询结果是一个空的列表-->
-       <!-- mysql提供了查看已执行过的SQL语句的功能，详见https://www.jiyik.com/tm/xwzj/sjk_6246.html，
-       cmd等于mysql命令：mysql -u root -p  -P 3306
-       本地已完成设置，只需输入行数为3的SELECT命令即可-->
-       <where>
-       <!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
-		<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
-			(courtOpenWeekNum = #{courtOpenWeekNum} OR courtOpenWeekNum = 7)
+	<resultMap id="CourtOpenInfoResultMap"
+		type="com.example.demo.entity.CourtOpenInfo">
+		<!-- 定义结果映射 -->
+		<!--column代表数据库中的列名，property代表java对象的属性名，jdbcType有自己的类型名称，和java的不一样 -->
+		<!--column和property必须都写？ -->
+		<id column="courtOpenInfoId" property="courtOpenInfoId"
+			jdbcType="INTEGER" />
+		<result column="courtOpenItemId" property="courtOpenItemId"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenCourtId" property="courtOpenCourtId"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenWeekday" property="courtOpenWeekday"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenWeekNum" property="courtOpenWeekNum"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenTimeZone" property="courtOpenTimeZone"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenTime" property="courtOpenTime"
+			jdbcType="VARCHAR" />
+		<result column="courtOpenUpdateTime"
+			property="courtOpenUpdateTime" jdbcType="TIMESTAMP" />
+		<result column="courtOpenNote" property="courtOpenNote"
+			jdbcType="VARCHAR" />
+		<result column="countInfos" property="countInfos"
+			jdbcType="INTEGER" />
+		<!--association代表一对一的关系，这里CourtOpenInfo使用了成员属性ItemInfo和CourtInfo（两者都是对象）
+			来存储使用SQL的JOIN ON语法查询到的另外两张表的数据，需要分别设置这两张表的字段和这两个对象的对应关系 -->
+		<association property="itemInfo"
+			javaType="com.example.demo.entity.ItemInfo">
+			<id column="itemInfoId" property='itemInfoId' jdbcType="VARCHAR" />
+			<result column="itemInfoName" property='itemInfoName'
+				jdbcType="VARCHAR" />
+		</association>
+		<association property="courtInfo"
+			javaType="com.example.demo.entity.CourtInfo">
+			<id column="courtId" property='courtId' jdbcType="INTEGER" />
+			<result column="courtName" property='courtName'
+				jdbcType="VARCHAR" />
+			<result column="courtDistance" property='courtDistance'
+				jdbcType="FLOAT" />
+			<result column="courtAdress" property='courtAdress'
+				jdbcType="VARCHAR" />
+		</association>
+		<!-- 其他属性的映射... -->
+	</resultMap>
+	<select id="getInfo" resultMap="CourtOpenInfoResultMap">
+		SELECT * FROM courtopeninfo
+		JOIN iteminfo ON
+		courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+		JOIN courtinfo ON
+		courtopeninfo.courtOpenCourtId = courtinfo.courtId
+		<!--踩坑记录：Java会为entity对象的int成员属性设定默认值为0，之前的写法是<if test="courtOpenWeekday
+			> -1"> （因为前台传过来的值只会是1，2，3）,在前端页面未填写courtOpenWeekday的情况下，会导致mybatis将SQL文写成courtOpenWeekday
+			= 0的形式， 所以数据的查询结果是一个空的列表 -->
+		<!-- mysql提供了查看已执行过的SQL语句的功能，详见https://www.jiyik.com/tm/xwzj/sjk_6246.html，
+			cmd等于mysql命令：mysql -u root -p -P 3306 本地已完成设置，只需输入行数为3的SELECT命令即可 -->
+		<where>
+			<!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
+			<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
+				(courtOpenWeekNum = #{courtOpenWeekNum} OR
+				courtOpenWeekNum = 7)
+			</if>
+			<if test="courtOpenWeekday != '' and courtOpenWeekday != null">
+				AND courtOpenWeekday = #{courtOpenWeekday}
+			</if>
+			<if test="courtOpenTimeZone != '' and courtOpenWeekday != null">
+				AND courtOpenTimeZone = #{courtOpenTimeZone}
+			</if>
+			<if test="courtOpenItemId != 0 and courtOpenWeekday != null">
+				AND courtOpenItemId = #{courtOpenItemId}
+			</if>
+		</where>
+	</select>
+	<select id="getTodayInfo" resultMap="CourtOpenInfoResultMap">
+		SELECT * FROM courtopeninfo
+		JOIN iteminfo ON
+		courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+		JOIN courtinfo ON
+		courtopeninfo.courtOpenCourtId = courtinfo.courtId
+		<if test="dayOfWeekInWeek != 0">
+			WHERE courtOpenWeekday = #{dayOfWeekInWeek}
 		</if>
-        <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
-                 AND courtOpenWeekday = #{courtOpenWeekday}
-        </if>
-        <if test="courtOpenTimeZone != '' and courtOpenWeekday != null">
-                 AND courtOpenTimeZone = #{courtOpenTimeZone}
-        </if>
-        <if test="courtOpenItemId != 0 and courtOpenWeekday != null">
-                 AND courtOpenItemId = #{courtOpenItemId}
-        </if>
-        </where>
-    </select>
-    <select id="getTodayInfo" resultMap="CourtOpenInfoResultMap">
-    	SELECT * FROM courtopeninfo
-    	JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
-        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
-    	<if test="dayOfWeekInWeek != 0">
-                 WHERE courtOpenWeekday = #{dayOfWeekInWeek}
-        </if>
-        <if test="weekNumber != 0">
-                 AND (courtOpenWeekNum = #{weekNumber}
-                 OR courtOpenWeekNum = 7)
-        </if>
-    </select>
-        <select id="getInfoByAdmin" resultMap="CourtOpenInfoResultMap">
-        SELECT * FROM courtopeninfo
-        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
-        JOIN courtinfo ON courtopeninfo.courtOpenCourtId = courtinfo.courtId
-       <where>
-       <!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
-		<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
-			courtOpenWeekNum = #{courtOpenWeekNum}
+		<if test="weekNumber != 0">
+			AND (courtOpenWeekNum = #{weekNumber}
+			OR courtOpenWeekNum =
+			7)
 		</if>
-        <if test="courtOpenWeekday != '' and courtOpenWeekday != null">
-            AND courtOpenWeekday = #{courtOpenWeekday}
-        </if>
-        <if test="courtOpenTimeZone != ''">
-            AND courtOpenTimeZone = #{courtOpenTimeZone}
-        </if>
-        <if test="courtOpenCourtId != ''">
-            AND courtOpenCourtId = #{courtOpenCourtId}
-        </if>
-        <if test="courtOpenItemId != 0">
-            AND courtOpenItemId = #{courtOpenItemId}
-        </if>
-        </where>
-    </select>
-    <insert id="setInfo" parameterType="CourtOpenInfo">
+	</select>
+	<select id="getInfoByAdmin" resultMap="CourtOpenInfoResultMap">
+		SELECT * FROM courtopeninfo
+		JOIN iteminfo ON
+		courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+		JOIN courtinfo ON
+		courtopeninfo.courtOpenCourtId = courtinfo.courtId
+		<where>
+			<!--在配置if条件的时候，一定要注意，==才是相等运算符！ -->
+			<if test="courtOpenWeekNum != '' and courtOpenWeekNum != null">
+				courtOpenWeekNum = #{courtOpenWeekNum}
+			</if>
+			<if test="courtOpenWeekday != '' and courtOpenWeekday != null">
+				AND courtOpenWeekday = #{courtOpenWeekday}
+			</if>
+			<if test="courtOpenTimeZone != ''">
+				AND courtOpenTimeZone = #{courtOpenTimeZone}
+			</if>
+			<if test="courtOpenCourtId != ''">
+				AND courtOpenCourtId = #{courtOpenCourtId}
+			</if>
+			<if test="courtOpenItemId != 0">
+				AND courtOpenItemId = #{courtOpenItemId}
+			</if>
+		</where>
+	</select>
+	<insert id="setInfo" parameterType="CourtOpenInfo">
 		INSERT INTO courtopeninfo (
 		courtOpenItemId,
 		courtOpenCourtId,
@@ -110,40 +134,68 @@
 		)
 	</insert>
 	<select id="getInfoById" resultType="CourtOpenInfo">
-    	SELECT * FROM courtopeninfo
-    	<if test="courtOpenItemId != 0">
+		SELECT * FROM courtopeninfo
+		<if test="courtOpenItemId != 0">
 			WHERE courtOpenInfoId = #{courtOpenInfoId}
-        </if>
-    </select>
-    <update id="updateInfo" parameterType="CourtOpenInfo">
-    	UPDATE courtopeninfo
-		SET courtOpenItemId = #{courtOpenItemId},
-			courtOpenCourtId = #{courtOpenCourtId},
-			courtOpenWeekNum = #{courtOpenWeekNum},
-			courtOpenWeekday = #{courtOpenWeekday},
-			courtOpenTimeZone = #{courtOpenTimeZone},
-			courtOpenTime = #{courtOpenTime},
-			courtOpenUpdateTime = #{courtOpenUpdateTime}
-		WHERE courtOpenInfoId = #{courtOpenInfoId}
-    </update>
-    <delete  id="deleteInfo" parameterType="java.util.List">
-    	DELETE FROM courtopeninfo
-    	WHERE courtOpenInfoId IN
-    	<foreach collection="infoIdlist" item="courtOpenInfoId" open="(" separator="," close=")">
-            #{courtOpenInfoId}
-        </foreach>
-    </delete>
+		</if>
+	</select>
+	<update id="updateInfo" parameterType="CourtOpenInfo">
+		UPDATE courtopeninfo
+		SET
+		courtOpenItemId = #{courtOpenItemId},
+		courtOpenCourtId =
+		#{courtOpenCourtId},
+		courtOpenWeekNum = #{courtOpenWeekNum},
+		courtOpenWeekday = #{courtOpenWeekday},
+		courtOpenTimeZone =
+		#{courtOpenTimeZone},
+		courtOpenTime = #{courtOpenTime},
+		courtOpenUpdateTime = #{courtOpenUpdateTime}
+		WHERE courtOpenInfoId =
+		#{courtOpenInfoId}
+	</update>
+	<delete id="deleteInfo" parameterType="java.util.List">
+		DELETE FROM courtopeninfo
+		WHERE courtOpenInfoId IN
+		<foreach collection="infoIdlist" item="courtOpenInfoId"
+			open="(" separator="," close=")">
+			#{courtOpenInfoId}
+		</foreach>
+	</delete>
 
-    <select id="getItemCountByCourt" resultMap="CourtOpenInfoResultMap">
-    	SELECT courtopeninfo.courtOpenCourtId,COUNT(courtOpenInfoId) AS countInfos,courtinfo.courtName
-		FROM courtopeninfo INNER JOIN courtinfo
+	<select id="getItemCountByCourt"
+		resultMap="CourtOpenInfoResultMap">
+		SELECT courtopeninfo.courtOpenCourtId,COUNT(courtOpenInfoId)
+		AS
+		countInfos,courtinfo.courtName
+		FROM courtopeninfo INNER JOIN
+		courtinfo
 		ON courtOpenCourtId = courtId
 		GROUP BY courtOpenCourtId
-    </select>
-   	<select id="getCourtItemNames" resultType="String">
-   	<!-- GROUP_CONCAT函数用于将itemInfoName字段的所有值连接成一个字符串-->
-        SELECT GROUP_CONCAT(DISTINCT itemInfoName) FROM courtopeninfo
-        JOIN iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
-        WHERE courtOpenCourtId = #{courtId}
-    </select>
+	</select>
+	<select id="getCourtItemNames" resultType="String">
+		<!-- GROUP_CONCAT函数用于将itemInfoName字段的所有值连接成一个字符串 -->
+		SELECT GROUP_CONCAT(DISTINCT itemInfoName) FROM courtopeninfo
+		JOIN
+		iteminfo ON courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+		WHERE
+		courtOpenCourtId = #{courtId}
+	</select>
+
+	<!-- 查找所有场馆的各项活动的开放数量 输出结果为场馆名,每个场馆各项活动的数量 -->
+	<select id="getAllCourtOpenInfoWithAllCourts" resultType="map">
+		select
+		courtopeninfo.courtOpenCourtId,
+		courtinfo.courtName,
+		courtopeninfo.courtOpenItemId,
+		iteminfo.itemInfoName,
+		count(courtopeninfo.courtOpenItemId) itemCount
+		from courtopeninfo
+		join courtinfo
+		on courtopeninfo.courtOpenCourtId = courtinfo.courtId
+		join iteminfo
+		on courtopeninfo.courtOpenItemId = iteminfo.itemInfoId
+		group by courtopeninfo.courtOpenItemId,courtopeninfo.courtOpenCourtId
+		order by courtopeninfo.courtOpenCourtId,courtopeninfo.courtOpenItemId
+	</select>
 </mapper>

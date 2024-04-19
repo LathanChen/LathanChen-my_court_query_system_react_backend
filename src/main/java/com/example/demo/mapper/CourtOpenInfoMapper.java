@@ -23,4 +23,6 @@ public interface CourtOpenInfoMapper {
 	ArrayList<CourtOpenInfo> getItemCountByCourt();
 
 	String getCourtItemNames(int courtId);
+
+	List<Map<String,Object>> getAllCourtOpenInfoWithAllCourts();
 }

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.CourtInfoMapper">
-	<select id="getCourts" resultType="com.example.demo.entity.CourtInfo">
-        SELECT * FROM courtinfo
-    </select>
-	<select id="getCourtNames" resultType="com.example.demo.entity.CourtInfo">
-        SELECT courtName,courtId FROM courtinfo
-    </select>
+	<select id="getCourts"
+		resultType="com.example.demo.entity.CourtInfo">
+		SELECT * FROM courtinfo
+	</select>
+	<select id="getCourtNames"
+		resultType="com.example.demo.entity.CourtInfo">
+		SELECT courtName,courtId FROM courtinfo
+	</select>
 	<select id="getCourtImgUrls" resultType="String">
-        SELECT imgUrl FROM court_info_img_url WHERE courtId = #{courtId}
-    </select>
-	<select id="getCourtInfoById" resultType="com.example.demo.entity.CourtInfo">
-        SELECT * FROM courtinfo WHERE courtId = #{courtId}
-    </select>
+		SELECT imgUrl FROM court_info_img_url WHERE courtId = #{courtId}
+	</select>
+	<select id="getCourtInfoById"
+		resultType="com.example.demo.entity.CourtInfo">
+		SELECT * FROM courtinfo WHERE courtId = #{courtId}
+	</select>
 	<select id="getCourtAvgScoreById" resultType="float">
-        SELECT AVG(score) FROM courtevaluate WHERE courtId = #{courtId}
-    </select>
-	<select id="getAllCommentsById" resultType="com.example.demo.entity.CourtEvaluate">
-        SELECT courtComment,score FROM courtevaluate WHERE courtId = #{courtId} And courtComment is not null ORDER BY num desc
-    </select>
-    <insert id="setCourtEvaluate" parameterType="com.example.demo.entity.CourtEvaluate">
+		SELECT AVG(score) FROM courtevaluate WHERE courtId = #{courtId}
+	</select>
+	<select id="getAllCommentsById"
+		resultType="com.example.demo.entity.CourtEvaluate">
+		SELECT courtComment,score FROM courtevaluate WHERE courtId = #{courtId} And
+		courtComment is not null ORDER BY num desc
+	</select>
+	<insert id="setCourtEvaluate"
+		parameterType="com.example.demo.entity.CourtEvaluate">
 		INSERT INTO courtevaluate
 		(
 		score,
@@ -32,13 +38,15 @@
 		#{courtComment},
 		#{courtId},
 		#{updatetime})
-    </insert>
-   	<select id="checkSameCourtName" resultType="int">
-        SELECT COUNT(*) FROM courtinfo WHERE courtName = #{courtName}
-    </select>
-    <!--useGeneratedKeys="true" 表示你想获取由数据库自动生成的键，而 keyProperty="id" 指定了应该将这个生成的键赋值给Java 对象的哪个属性。
-	一旦你执行了这个插入操作，传入的 CourtInfo 对象的 courtId 属性将被自动更新为新生成的 courtId 值。 -->
-    <insert id="setCourtInfo" parameterType="com.example.demo.entity.CourtInfo" useGeneratedKeys="true" keyProperty="courtId">
+	</insert>
+	<select id="checkSameCourtName" resultType="int">
+		SELECT COUNT(*) FROM courtinfo WHERE courtName = #{courtName}
+	</select>
+	<!--useGeneratedKeys="true" 表示你想获取由数据库自动生成的键，而 keyProperty="id" 指定了应该将这个生成的键赋值给Java
+		对象的哪个属性。 一旦你执行了这个插入操作，传入的 CourtInfo 对象的 courtId 属性将被自动更新为新生成的 courtId 值。 -->
+	<insert id="setCourtInfo"
+		parameterType="com.example.demo.entity.CourtInfo"
+		useGeneratedKeys="true" keyProperty="courtId">
 		INSERT INTO courtinfo
 		(
 		courtName,
@@ -53,42 +61,47 @@
 		#{courtTelNum},
 		#{courtStation},
 		#{courtFromStationDistance})
-    </insert>
-    <insert id="setCourtInfoUrls" parameterType="map">
+	</insert>
+	<insert id="setCourtInfoUrls" parameterType="map">
 		INSERT INTO court_info_img_url
 		(
 		imgUrl,
 		courtId,
 		imgName)
 		VALUES
-	    <foreach collection="courtInfoUrls" item="courtInfoUrl" index="index" separator=",">
-		  (#{courtInfoUrl}, #{courtId}, #{courtNames[${index}]})
+		<foreach collection="courtInfoUrls" item="courtInfoUrl"
+			index="index" separator=",">
+			(#{courtInfoUrl}, #{courtId}, #{courtNames[${index}]})
 		</foreach>
-    </insert>
-    <select id="getCourtList" resultType="com.example.demo.entity.CourtInfo">
-        SELECT c.*,
-       (
-       SELECT img_url.imgUrl
-        FROM court_info_img_url AS img_url
-        WHERE c.courtId = img_url.courtId
-        LIMIT 1)
-        AS imgUrl
+	</insert>
+	<select id="getCourtList"
+		resultType="com.example.demo.entity.CourtInfo">
+		SELECT c.*,
+		(
+		SELECT img_url.imgUrl
+		FROM court_info_img_url AS img_url
+		WHERE c.courtId = img_url.courtId
+		LIMIT 1)
+		AS imgUrl
 		FROM courtinfo AS c;
-    </select>
-    <delete  id="deleteCourtInfo" parameterType="int">
+	</select>
+	<delete id="deleteCourtInfo" parameterType="int">
 		DELETE FROM courtinfo
-		WHERE courtId =  #{courtId}
-    </delete>
-    <delete  id="deleteCourtImgs" parameterType="int">
-		DELETE FROM court_info_img_url
-		WHERE courtId =  #{courtId}
-    </delete>
+		WHERE courtId = #{courtId}
+	</delete>
+	<delete id="deleteCourtImgs" parameterType="int">
+		DELETE FROM
+		court_info_img_url
+		WHERE courtId = #{courtId}
+	</delete>
 	<update id="updateCourtInfo" parameterType="map">
 		UPDATE courtinfo
-		SET courtAdress = #{courtAdress},
+		SET
+		courtAdress = #{courtAdress},
 		courtTelNum = #{courtTelNum},
 		courtStation = #{courtStation},
-		courtFromStationDistance = #{courtFromStationDistance}
+		courtFromStationDistance =
+		#{courtFromStationDistance}
 		WHERE courtId = #{courtId}
 	</update>
 </mapper>

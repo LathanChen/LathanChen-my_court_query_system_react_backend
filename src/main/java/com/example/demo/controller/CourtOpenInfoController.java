@@ -78,6 +78,12 @@ public class CourtOpenInfoController {
 		return courtOpenInfoService.deleteInfo(infoIdlist);
 	}
 
+	@RequestMapping(value="/allCourtOpenInfoWithAllCourts",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseResult getAllCourtOpenInfoWithAllCourts(){
+		return courtOpenInfoService.getAllCourtOpenInfoWithAllCourts();
+	}
+
 //	@RequestMapping(value="/getCourtItemNames",method=RequestMethod.GET)
 //	@ResponseBody
 //	public String getCourtItemNames(@RequestParam("courtId") int courtId){

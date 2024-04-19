@@ -211,4 +211,11 @@ public class CourtOpenInfoServiceImpl implements CourtOpenInfoService{
 		return courtOpenInfoMapper.getCourtItemNames(courtId);
 	}
 
+	@Override
+	public ResponseResult getAllCourtOpenInfoWithAllCourts() {
+		List mapperList = courtOpenInfoMapper.getAllCourtOpenInfoWithAllCourts();
+		return !mapperList.isEmpty() ? new ResponseResult(200,mapperList) : new ResponseResult(200,"検索されたデータが存在しない！");
+	}
+
+
 }

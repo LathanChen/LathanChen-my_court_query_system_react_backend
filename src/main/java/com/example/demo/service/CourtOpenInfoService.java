@@ -25,4 +25,6 @@ public interface CourtOpenInfoService {
 	boolean deleteInfo(List infoIdlist);
 
 	String getCourtItemNames(int courtId);
+
+	ResponseResult getAllCourtOpenInfoWithAllCourts();
 }
