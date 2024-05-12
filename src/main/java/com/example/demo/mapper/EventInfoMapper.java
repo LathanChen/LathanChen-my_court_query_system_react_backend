@@ -12,4 +12,6 @@ public interface EventInfoMapper {
 	List<Map<String,Object>> getAvailableEvents();
 
 	List<Map<String,Object>> getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId);
+
+	List<EventInfo> getEventInfosByUserId(int userId);
 }

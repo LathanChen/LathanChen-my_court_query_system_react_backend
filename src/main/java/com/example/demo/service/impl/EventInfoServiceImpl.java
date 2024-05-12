@@ -25,11 +25,32 @@ import com.example.demo.service.EventInfoService;
 @Transactional
 public class EventInfoServiceImpl implements EventInfoService {
 
+//	通过构造函数进行依赖注入
+//	优点：
+//	不可变性：使用 final 关键字声明依赖，保证了依赖不会被再次赋值。
+//	依赖清晰：通过构造函数明确表明类的依赖，便于理解和测试。
+//	避免循环依赖：构造函数注入有助于在编译时发现循环依赖的问题。
+	private final UserServiceImpl userServiceImpl;
+
+//	通过字段进行依赖注入
+//	优点：
+//	简便：代码更简洁，易于快速编写。
+//	灵活性：适合快速原型开发和小规模项目。
+//
+//	缺点：
+//	难以发现依赖：依赖关系在类的内部，可能不易于立即识别。
+//	不支持不可变性：不能使用 final 关键字，可能导致依赖在对象生命周期中被改变。
+//	测试困难：直接在字段上注入可能使得测试更加困难，因为需要使用反射或 Spring 特定工具来注入依赖。
 	@Autowired
 	private EventInfoMapper eventInfoMapper;
 
 	@Autowired
 	private EventEntryInfoMapper eventEntryInfoMapper;
+
+	@Autowired
+	public EventInfoServiceImpl(UserServiceImpl userServiceImpl) {
+		this.userServiceImpl = userServiceImpl;
+	}
 
 	@Override
 	public ResponseResult getEventInfos(EventInfo eventInfo) {
@@ -116,6 +137,19 @@ public class EventInfoServiceImpl implements EventInfoService {
 	public ResponseResult getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId) {
 		List vailableEventsOrganizerNameAndMemberNumByItemIdList = eventInfoMapper.getAvailableEventsOrganizerNameAndMemberNumsByItemId(eventItemId);
 		return new ResponseResult(200,"查询成功",vailableEventsOrganizerNameAndMemberNumByItemIdList);
+	}
+
+	@Override
+	public ResponseResult getEventInfosByUserId() {
+		long _userId = userServiceImpl.fecthUserInfoCommon().getId();
+		int userId = (int)_userId;
+		List eventInfoList = eventInfoMapper.getEventInfosByUserId(userId);
+		if (eventInfoList != null && !eventInfoList.isEmpty()) {
+			return new ResponseResult<List>(200,"查询成功",eventInfoList);
+		}
+		else {
+			return new ResponseResult<List>(204,"未能查询到数据！");
+		}
 	}
 
 }

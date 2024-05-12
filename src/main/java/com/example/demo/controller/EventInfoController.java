@@ -37,4 +37,10 @@ public class EventInfoController {
 	public ResponseResult getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId) {
 		return eventInfoService.getAvailableEventsOrganizerNameAndMemberNumsByItemId(eventItemId);
 	}
+
+	@RequestMapping(value="/getEventInfosByUserId",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseResult getEventInfosByUserId() {
+		return eventInfoService.getEventInfosByUserId();
+	}
 }

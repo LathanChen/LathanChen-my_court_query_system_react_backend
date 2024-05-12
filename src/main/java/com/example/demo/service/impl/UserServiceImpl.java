@@ -73,22 +73,40 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseResult fecthUserInfo() {
 		// TODO 自動生成されたメソッド・スタブ
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
-				if (!(authentication instanceof AnonymousAuthenticationToken)) {
-					// 获取用户详细信息
-					User userInfo = new User();
-					LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-					User _userInfo = loginUser.getUser();
-					userInfo.setNickName(_userInfo.getNickName());
-					userInfo.setAge(_userInfo.getAge());
-					userInfo.setSex(_userInfo.getSex());
-					userInfo.setEmail(_userInfo.getEmail());
-					System.out.println(userInfo);
-					return new ResponseResult(200, "取得用户信息成功", userInfo);
-					}
-				else {
-					return new ResponseResult(500, "用户登录已过期");
-				}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			// 获取用户详细信息
+			User userInfo = new User();
+			LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+			User _userInfo = loginUser.getUser();
+			userInfo.setNickName(_userInfo.getNickName());
+			userInfo.setAge(_userInfo.getAge());
+			userInfo.setSex(_userInfo.getSex());
+			userInfo.setEmail(_userInfo.getEmail());
+			System.out.println(userInfo);
+			return new ResponseResult(200, "取得用户信息成功", userInfo);
+		} else {
+			return new ResponseResult(500, "用户登录已过期");
+		}
+	}
+
+	public User fecthUserInfoCommon() {
+		// TODO 自動生成されたメソッド・スタブ
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// authentication instanceof AnonymousAuthenticationToken表达式为真，则代表未登录
+		User userInfo = new User();
+		// 获取用户详细信息
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+			User _userInfo = loginUser.getUser();
+			userInfo.setNickName(_userInfo.getNickName());
+			userInfo.setAge(_userInfo.getAge());
+			userInfo.setSex(_userInfo.getSex());
+			userInfo.setEmail(_userInfo.getEmail());
+			userInfo.setId(_userInfo.getId());
+		}
+		System.out.println(userInfo);
+		return userInfo;
 	}
 }

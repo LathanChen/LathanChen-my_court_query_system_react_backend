@@ -32,6 +32,12 @@
 			<result column="courtAdress" property='courtAdress'
 				jdbcType="VARCHAR" />
 		</association>
+		<association property="organizer"
+			javaType="com.example.demo.entity.Organizer">
+			<id column="organizerId" property='organizerId' jdbcType="INTEGER" />
+			<result column="organizerName" property='organizerName'
+				jdbcType="VARCHAR" />
+		</association>
 	</resultMap>
 	<select id="getEventInfos" resultMap="EventInfoResultMap">
 		SELECT * FROM eventinfo
@@ -39,6 +45,8 @@
 		iteminfo.itemInfoId
 		JOIN courtinfo ON eventinfo.eventCourtId =
 		courtinfo.courtId
+        JOIN organizer_master ON eventinfo.organizerId =
+        organizer_master.organizerId
 		<where>
 			<if test="eventOpenDay != null">
 				(eventOpenDay = #{eventOpenDay})
@@ -100,5 +108,12 @@
 		AND (COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment &lt;=
 		e.eventMaxEnrollment)
 		order by iteminfo.itemInfoName;
+	</select>
+
+	<select id="getEventInfosByUserId"
+		resultMap="EventInfoResultMap">
+		SELECT * FROM courtquery.eventinfo
+		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
+		WHERE organizerId in (select organizerId FROM organizer_master WHERE userId = #{userId})
 	</select>
 </mapper>

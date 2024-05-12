@@ -64,4 +64,7 @@ public class EventInfo {
 
 //	追加,用于确认当前登录用户是否已报名该活动
 	private boolean isRegistered;
+
+//	活动举办组织的名称
+	private Organizer organizer;
 }
