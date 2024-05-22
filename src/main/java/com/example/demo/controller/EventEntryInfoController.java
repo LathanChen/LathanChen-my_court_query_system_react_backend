@@ -40,4 +40,12 @@ public class EventEntryInfoController {
 		return eventEntryInfoService.getEventEntryInfosByUserId();
 	}
 
+	@RequestMapping(value="/getMemberNicknamesByEventID",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseResult getMemberNicknamesByEventID(int eventInfoId) {
+		return eventEntryInfoService.getMemberNicknamesByEventID(eventInfoId);
+	}
+
+
+
 }

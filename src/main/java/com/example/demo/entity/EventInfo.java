@@ -20,7 +20,7 @@ public class EventInfo {
 	private int eventInfoId;
 
 //	项目的ID，对应iteminfo表中的编号
-	private String eventItemId;
+	private int eventItemId;
 
 //	场地的ID，对应courtinfo表中的编号
 	private String eventCourtId;
@@ -41,7 +41,7 @@ public class EventInfo {
 //	其他一些备注
 	private String eventNote;
 
-//	活动当前的报名人数
+//	通过其他渠道报名的人数
 	private int eventEnrollment;
 
 //	活动的报名人数上限
@@ -62,7 +62,7 @@ public class EventInfo {
 //	分页追加，每页明细的数量
 	private int PageSize;
 
-//	追加,用于确认当前登录用户是否已报名该活动
+//	追加，用于确认当前登录用户是否已报名该活动，控制页面报名按钮是否可用
 	private boolean isRegistered;
 
 //	活动举办组织的名称

@@ -12,4 +12,6 @@ public interface EventEntryInfoMapper {
 	boolean setEventEntryInfo(EventEntryInfo eventEntryInfo);
 
 	ArrayList<EventEntryInfo> getEventEntryInfosByUserId(int userId);
+
+	List<EventEntryInfo> getMemberNicknamesByEventID(int eventInfoId);
 }

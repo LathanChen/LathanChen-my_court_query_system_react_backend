@@ -6,7 +6,7 @@
         WHERE userName = #{userName}
     </select>
     <insert id="registerUser" parameterType="com.example.demo.entity.User">
-	  INSERT INTO sys_user ( userName,password,email)
-	  VALUES (#{userName}, #{password}, #{email})
+	  INSERT INTO sys_user ( userName,password,email,nickName)
+	  VALUES (#{userName}, #{password}, #{email},#{nickName})
 	</insert>
 </mapper>

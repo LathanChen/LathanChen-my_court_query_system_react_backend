@@ -22,6 +22,7 @@ public class EventEntryInfo {
 	private Timestamp entryTime;
 
 //	是否取消报名
+//	SpringBoot默认使用的JSON 库Jackson会导致自动推断该属性的 JSON 属性名为 cancel 而不是 isCancel
 	private boolean isCancel;
 
 //	对应的活动信息
@@ -35,5 +36,8 @@ public class EventEntryInfo {
 
 //	场地信息
 	private CourtInfo courtInfo;
+
+//	该条信息的ID
+	private int infoId;
 
 }

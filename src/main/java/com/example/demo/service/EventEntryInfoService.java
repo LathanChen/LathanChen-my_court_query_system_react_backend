@@ -12,4 +12,6 @@ public interface EventEntryInfoService {
 	ResponseResult setEventEntryInfo(EventEntryInfo eventEntryInfo);
 
 	ResponseResult getEventEntryInfosByUserId();
+
+	ResponseResult getMemberNicknamesByEventID(int eventInfoId);
 }

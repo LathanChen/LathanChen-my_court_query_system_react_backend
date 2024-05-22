@@ -37,6 +37,7 @@
 			close=")">
 			#{id}
 		</foreach>
+		AND isCancel = 0
 		ORDER BY eventInfoId
 	</select>
 
@@ -46,12 +47,14 @@
 		(eventInfoId,
 		userId,
 		nickName,
-		entryTime)
+		entryTime,
+		isCancel)
 		VALUES
 		(#{eventInfoId},
 		#{userId},
 		#{nickName},
-		#{entryTime}
+		#{entryTime},
+		#{isCancel}
 		)
 	</insert>
 
@@ -70,5 +73,11 @@
 		JOIN courtinfo ON eventinfo.eventCourtId =
 		courtinfo.courtId
 		WHERE event_entry_info.userId = #{userId}
+	</select>
+
+	<select id="getMemberNicknamesByEventID"
+		resultType="com.example.demo.entity.EventEntryInfo">
+		SELECT * from event_entry_info
+		WHERE eventInfoId = #{eventInfoId} AND isCancel = 0;
 	</select>
 </mapper>
