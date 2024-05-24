@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import com.example.demo.entity.ResponseResult;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
+import com.example.demo.util.RedisCache;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+    private RedisCache redisCache;
 
 	@Override
 	public boolean registerUser(User user) {
@@ -109,4 +114,34 @@ public class UserServiceImpl implements UserService {
 		System.out.println(userInfo);
 		return userInfo;
 	}
+
+	@Override
+	public ResponseResult updateUserInfo(User user) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+		long userId = loginUser.getUser().getId();
+		user.setId(userId);
+		if (userMapper.updateUserInfo(user) == 1) {
+			User newUserInfoUser = userMapper.getUserInfoByName(loginUser.getUser().getUserName());
+			LoginUser newLoginUser = new LoginUser(newUserInfoUser,loginUser.getPermissions());
+//			更新redis中的用户信息
+			redisCache.setCacheObject("login:" + userId, newLoginUser);
+//			updateSecurityContextHolder(newLoginUser);
+			return new ResponseResult(200, "更新に成功しました！");
+		}
+		return new ResponseResult(500, "更新に失敗しました！");
+	}
+
+
+//	下面的方法可以删除
+//	原因：JwtAuthenticationTokenFilter在每次用户的TOKEN进行验证时，都会将从redis中取出最新的用户信息，
+//	并创建一个新的UsernamePasswordAuthenticationToken存储最新的用户信息
+//	因此updateUserInfo方法只需要在更新数据库的同时更新redis就可以了，不用再执行下面的方法
+	private void updateSecurityContextHolder(LoginUser updatedUser) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+            updatedUser, authentication.getCredentials(), updatedUser.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
 }

@@ -9,4 +9,6 @@ public interface UserService {
 	ResponseResult userPermissions();
 
 	ResponseResult fecthUserInfo();
+
+	ResponseResult updateUserInfo(User user);
 }

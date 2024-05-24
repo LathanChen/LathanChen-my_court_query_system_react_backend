@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.UserMapper">
-    <select id="getUserInfoByName" resultType="com.example.demo.entity.User">
-        SELECT * FROM sys_user
-        WHERE userName = #{userName}
-    </select>
-    <insert id="registerUser" parameterType="com.example.demo.entity.User">
-	  INSERT INTO sys_user ( userName,password,email,nickName)
-	  VALUES (#{userName}, #{password}, #{email},#{nickName})
+	<select id="getUserInfoByName"
+		resultType="com.example.demo.entity.User">
+		SELECT * FROM sys_user
+		WHERE userName = #{userName}
+	</select>
+
+	<insert id="registerUser"
+		parameterType="com.example.demo.entity.User">
+		INSERT INTO sys_user ( userName,password,email,nickName)
+		VALUES (#{userName}, #{password}, #{email},#{nickName})
 	</insert>
+
+	<update id="updateUserInfo" parameterType="User">
+		update courtquery.sys_user
+		set nickName = #{nickName},
+		age = #{age},
+		sex = #{sex},
+		email = #{email}
+		where id = #{id}
+	</update>
 </mapper>

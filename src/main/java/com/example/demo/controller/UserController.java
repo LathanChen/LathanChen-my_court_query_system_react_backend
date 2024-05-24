@@ -38,6 +38,10 @@ public class UserController {
     	return userService.fecthUserInfo();
     }
 
-
+    @RequestMapping(value="/userinfo", method=RequestMethod.PUT)
+    @ResponseBody
+    public ResponseResult updateUserInfo(@RequestBody User user) {
+        return userService.updateUserInfo(user);
+    }
 }
 
