@@ -24,6 +24,8 @@
 		</association>
 		<association property="courtInfo"
 			javaType="com.example.demo.entity.CourtInfo">
+			<result column="courtId" property="courtId"
+				jdbcType="INTEGER" />
 			<result column="courtName" property="courtName"
 				jdbcType="VARCHAR" />
 		</association>
@@ -61,10 +63,18 @@
 	<select id="getEventEntryInfosByUserId"
 		resultMap="getEventEntryInfosByUserIdMap">
 		SELECT
-		event_entry_info.entryTime,eventinfo.eventOpenDay,event_entry_info.eventInfoId,organizer_master.organizerName,iteminfo.itemInfoName,courtinfo.courtName
-		FROM event_entry_info
+		event_entry_info.entryTime,
+		eventinfo.eventOpenDay,
+		event_entry_info.eventInfoId,
+		organizer_master.organizerName,
+		iteminfo.itemInfoName,
+		courtinfo.courtId,
+		courtinfo.courtName
+		FROM
+		event_entry_info
 		LEFT JOIN eventinfo ON
-		event_entry_info.eventInfoId = eventinfo.eventInfoId
+		event_entry_info.eventInfoId =
+		eventinfo.eventInfoId
 		JOIN
 		organizer_master ON eventinfo.organizerId =
 		organizer_master.organizerId
@@ -78,6 +88,7 @@
 	<select id="getMemberNicknamesByEventID"
 		resultType="com.example.demo.entity.EventEntryInfo">
 		SELECT * from event_entry_info
-		WHERE eventInfoId = #{eventInfoId} AND isCancel = 0;
+		WHERE eventInfoId =
+		#{eventInfoId} AND isCancel = 0;
 	</select>
 </mapper>

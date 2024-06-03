@@ -24,8 +24,12 @@ import com.example.demo.entity.PaginationResult;
 import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.CourtInfoService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/courtinfo")
+//使用 @Slf4j 注解来自动生成 Logger 实例。
+@Slf4j
 public class CourtInfoController {
 
 //	---------------------------------部署时修改---------------------------------
@@ -52,6 +56,7 @@ public class CourtInfoController {
 	@RequestMapping(value="/getcourtnames",method=RequestMethod.GET)
 	@ResponseBody
 	public PaginationResult<CourtInfo> getCourtNames(int PageNum,int PageSize){
+		log.info("调用getCourtNames方法！");
 		return (PaginationResult<CourtInfo>)courtInfoService.getCourtNames(PageNum,PageSize);
 	}
 

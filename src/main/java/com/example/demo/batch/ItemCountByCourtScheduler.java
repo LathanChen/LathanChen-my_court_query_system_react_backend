@@ -18,6 +18,8 @@ public class ItemCountByCourtScheduler {
     @Autowired
     public ItemCountByCourtScheduler(JobLauncher jobLauncher, Job itemCountByCourtJob) {
         this.jobLauncher = jobLauncher;
+
+//      这里的成员变量（itemCountByCourtJob）命名必需和ItemCountByCourtConfig中定义的Job的名称一致
         this.itemCountByCourtJob = itemCountByCourtJob;
     }
 

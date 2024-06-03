@@ -9,6 +9,7 @@ import lombok.Data;
 public class Organizer {
 
 //	開催者識別番号
+//	主key
 	private int organizerId;
 
 //	開催者名

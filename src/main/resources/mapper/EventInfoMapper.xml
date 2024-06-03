@@ -35,6 +35,7 @@
 		<association property="organizer"
 			javaType="com.example.demo.entity.Organizer">
 			<id column="organizerId" property='organizerId' jdbcType="INTEGER" />
+			<result column="organizerName" property='organizerName' jdbcType="VARCHAR" />
 			<result column="organizerName" property='organizerName'
 				jdbcType="VARCHAR" />
 		</association>
@@ -45,8 +46,8 @@
 		iteminfo.itemInfoId
 		JOIN courtinfo ON eventinfo.eventCourtId =
 		courtinfo.courtId
-        JOIN organizer_master ON eventinfo.organizerId =
-        organizer_master.organizerId
+		JOIN organizer_master ON eventinfo.organizerId =
+		organizer_master.organizerId
 		<where>
 			<if test="eventOpenDay != null">
 				(eventOpenDay = #{eventOpenDay})
@@ -65,20 +66,25 @@
 		SELECT
 		count(e.eventInfoId) as eventCount,
 		iteminfo.itemInfoName
-		FROM eventinfo e
+		FROM eventinfo
+		e
 		LEFT JOIN (
 		SELECT
 		eventInfoId,
 		COUNT(*) AS eventEntryCount
-		FROM event_entry_info
+		FROM
+		event_entry_info
 		GROUP BY eventInfoId
-		) ei ON ei.eventInfoId = e.eventInfoId
+		) ei ON ei.eventInfoId =
+		e.eventInfoId
 		left join iteminfo
 		on e.eventItemId = iteminfo.itemInfoId
 		where e.eventOpenDay>= CURDATE()
-		AND (COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment &lt;=
+		AND (COALESCE(ei.eventEntryCount,
+		0)+e.eventEnrollment &lt;=
 		e.eventMaxEnrollment)
-		group by iteminfo.itemInfoName;
+		group by
+		iteminfo.itemInfoName;
 	</select>
 
 	<!-- 查找参加日之前的指定活动的报名情况,输出结果为主办方名称、报名上限、现在报名人数 -->
@@ -89,31 +95,45 @@
 		e.eventInfoId,
 		organizer_master.organizerName,
 		iteminfo.itemInfoName,
-		COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment AS entryCount,
+		COALESCE(ei.eventEntryCount,
+		0)+e.eventEnrollment AS entryCount,
 		e.eventMaxEnrollment
-		FROM eventinfo e
+		FROM eventinfo
+		e
 		LEFT JOIN (
 		SELECT
 		eventInfoId,
 		COUNT(*) AS eventEntryCount
-		FROM event_entry_info
+		FROM
+		event_entry_info
 		GROUP BY eventInfoId
-		) ei ON ei.eventInfoId = e.eventInfoId
+		) ei ON ei.eventInfoId =
+		e.eventInfoId
 		left join iteminfo
 		on e.eventItemId = iteminfo.itemInfoId
 		left join organizer_master
-		on e.organizerId = organizer_master.organizerId
+		on e.organizerId =
+		organizer_master.organizerId
 		where e.eventOpenDay>= CURDATE()
-		and e.eventItemId = #{eventItemId}
-		AND (COALESCE(ei.eventEntryCount, 0)+e.eventEnrollment &lt;=
+		and
+		e.eventItemId = #{eventItemId}
+		AND (COALESCE(ei.eventEntryCount,
+		0)+e.eventEnrollment &lt;=
 		e.eventMaxEnrollment)
-		order by iteminfo.itemInfoName;
+		order by
+		iteminfo.itemInfoName;
 	</select>
 
 	<select id="getEventInfosByUserId"
 		resultMap="EventInfoResultMap">
-		SELECT * FROM courtquery.eventinfo
+		SELECT * FROM eventinfo
 		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
-		WHERE organizerId in (select organizerId FROM organizer_master WHERE userId = #{userId})
+		JOIN organizer_master ON eventinfo.organizerId =
+		organizer_master.organizerId
+		JOIN iteminfo on eventinfo.eventItemId = iteminfo.itemInfoId
+		WHERE eventinfo.organizerId in (select organizerId FROM organizer_master
+		WHERE userId = #{userId})
+		order by
+		eventinfo.eventOpenDay,eventinfo.eventOpenTimeZone,eventinfo.eventItemId;
 	</select>
 </mapper>
