@@ -17,7 +17,7 @@
 		<result property="eventMaleCost" column="eventMaleCost" />
 		<result property="eventFemaleCost" column="eventFemaleCost" />
 		<association property="itemInfo"
-			javaType="com.example.demo.entity.ItemInfo">
+			javaType="com.example.demo.entity.ItemInfo" autoMapping="true">
 			<id column="itemInfoId" property='itemInfoId' jdbcType="VARCHAR" />
 			<result column="itemInfoName" property='itemInfoName'
 				jdbcType="VARCHAR" />
@@ -35,10 +35,17 @@
 		<association property="organizer"
 			javaType="com.example.demo.entity.Organizer">
 			<id column="organizerId" property='organizerId' jdbcType="INTEGER" />
-			<result column="organizerName" property='organizerName' jdbcType="VARCHAR" />
+			<result column="organizerName" property='organizerName'
+				jdbcType="VARCHAR" />
 			<result column="organizerName" property='organizerName'
 				jdbcType="VARCHAR" />
 		</association>
+		<collection property="entryInfoList"
+			ofType="com.example.demo.entity.EventEntryInfo" autoMapping="true">
+			<id property="infoId" column="infoId" />
+			<result column="entryEventInfoId" property='eventInfoId' />
+			<result column="entryUserId" property='userId' />
+		</collection>
 	</resultMap>
 	<select id="getEventInfos" resultMap="EventInfoResultMap">
 		SELECT * FROM eventinfo
@@ -126,14 +133,64 @@
 
 	<select id="getEventInfosByUserId"
 		resultMap="EventInfoResultMap">
-		SELECT * FROM eventinfo
-		JOIN courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
-		JOIN organizer_master ON eventinfo.organizerId =
-		organizer_master.organizerId
-		JOIN iteminfo on eventinfo.eventItemId = iteminfo.itemInfoId
-		WHERE eventinfo.organizerId in (select organizerId FROM organizer_master
-		WHERE userId = #{userId})
-		order by
-		eventinfo.eventOpenDay,eventinfo.eventOpenTimeZone,eventinfo.eventItemId;
+		SELECT
+		eventinfo.*,
+		iteminfo.*,
+		courtinfo.*,
+		organizer_master.*,
+		event_entry_info.infoId,
+		event_entry_info.mailAddress,
+		event_entry_info.nickName,
+		event_entry_info.eventInfoId as entryEventInfoId,
+		event_entry_info.userId as entryUserId,
+        event_entry_info.entryTime
+		FROM
+		eventinfo
+		JOIN
+		courtinfo ON eventinfo.eventCourtId = courtinfo.courtId
+		JOIN
+		organizer_master ON eventinfo.organizerId = organizer_master.organizerId
+		JOIN
+		iteminfo ON eventinfo.eventItemId = iteminfo.itemInfoId
+		LEFT JOIN
+		event_entry_info ON eventinfo.eventInfoID = event_entry_info.eventInfoId
+		AND event_entry_info.isCancel = 0
+		WHERE
+		eventinfo.organizerId IN (
+		SELECT organizerId
+		FROM organizer_master
+		WHERE userId = #{userId}
+		)
+		ORDER BY
+		eventinfo.eventOpenDay,
+		eventinfo.eventOpenTimeZone,
+		eventinfo.eventItemId;
 	</select>
+
+	<delete id="deleteEventInfoByEventInfoId" parameterType="int">
+		DELETE
+		FROM eventinfo
+		WHERE eventInfoId = #{eventInfoId}
+	</delete>
+
+	<update id="updateEventInfo" parameterType="EventInfo">
+		UPDATE eventinfo
+		SET
+		eventItemId = #{eventItemId},
+		eventCourtId = #{eventCourtId},
+		eventOpenDay = #{eventOpenDay},
+		eventOpenTimeZone =
+		#{eventOpenTimeZone},
+		eventOpenTime = #{eventOpenTime},
+		eventUpdateTime
+		= #{eventUpdateTime},
+		eventEnrollment = #{eventEnrollment},
+		eventMaxEnrollment = #{eventMaxEnrollment},
+		eventMaleCost =
+		#{eventMaleCost},
+		eventFemaleCost = #{eventFemaleCost}
+		WHERE
+		eventInfoId
+		= #{eventInfoId}
+	</update>
 </mapper>

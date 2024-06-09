@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -67,4 +68,7 @@ public class EventInfo {
 
 //	活动举办组织的名称
 	private Organizer organizer;
+
+//	该活动所有的报名信息
+	private List<EventEntryInfo> entryInfoList;
 }

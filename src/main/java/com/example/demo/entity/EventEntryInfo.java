@@ -6,6 +6,9 @@ import lombok.Data;
 @Data
 public class EventEntryInfo {
 
+//	该条信息的ID
+	private int infoId;
+
 //	报名中的活动的编号
 	private int eventInfoId;
 
@@ -36,8 +39,5 @@ public class EventEntryInfo {
 
 //	场地信息
 	private CourtInfo courtInfo;
-
-//	该条信息的ID
-	private int infoId;
 
 }

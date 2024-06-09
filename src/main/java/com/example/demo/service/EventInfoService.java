@@ -15,5 +15,9 @@ public interface EventInfoService {
 
 	ResponseResult getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId);
 
-	ResponseResult getEventInfosByUserId();;
+	ResponseResult getEventInfosByUserId();
+
+	ResponseResult deleteEventInfoByEventInfoId(int eventInfoId);
+
+	ResponseResult updateEventInfo(EventInfo eventInfo);
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,8 @@ import com.example.demo.service.EventInfoService;
 @Service
 @Transactional
 public class EventInfoServiceImpl implements EventInfoService {
+
+	private static final Logger logger = LoggerFactory.getLogger(EventInfoService.class);
 
 //	通过构造函数进行依赖注入
 //	优点：
@@ -62,9 +66,8 @@ public class EventInfoServiceImpl implements EventInfoService {
 		if (_eventList.size() > 0) {
 			eventIdList = _eventList.stream().map(EventInfo::getEventInfoId).collect(Collectors.toList());
 			System.out.println(eventIdList);
-		}
-		else {
-			ResponseResult responseResult = new ResponseResult(404,"没有查询到数据",null);
+		} else {
+			ResponseResult responseResult = new ResponseResult(404, "没有查询到数据", null);
 			return responseResult;
 		}
 
@@ -92,11 +95,11 @@ public class EventInfoServiceImpl implements EventInfoService {
 			_eventList.forEach(_eventInfo -> {
 				eventIdAndEntryNums.forEach(_eventEntryInfo -> {
 //					如果当前活动信息id和活动信息报名表中的id相同
-					if(_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
+					if (_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
 //						将该活动信息中活动发起人填写的已报名人数和活动信息报名表中现有的报名人数相加，获得实际最新的报名人数
 						_eventInfo.setEventEnrollment(_eventInfo.getEventEnrollment() + 1);
 //						如果本活动报名信息的报名人员中存在当前登录的用户
-						if(_eventEntryInfo.getUserId() == userId) {
+						if (_eventEntryInfo.getUserId() == userId) {
 //							向前端传递已报名信息，按钮设置为不可用
 							_eventInfo.setRegistered(true);
 						}
@@ -110,7 +113,7 @@ public class EventInfoServiceImpl implements EventInfoService {
 			_eventList.forEach(_eventInfo -> {
 				eventIdAndEntryNums.forEach(_eventEntryInfo -> {
 //					如果当前活动信息id和活动信息报名表中的id相同
-					if(_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
+					if (_eventInfo.getEventInfoId() == _eventEntryInfo.getEventInfoId()) {
 //						将该活动信息中活动发起人填写的已报名人数和活动信息报名表中现有的报名人数相加，获得实际最新的报名人数
 						_eventInfo.setEventEnrollment(_eventInfo.getEventEnrollment() + 1);
 					}
@@ -123,32 +126,66 @@ public class EventInfoServiceImpl implements EventInfoService {
 		System.out.println(_eventList);
 		ArrayList<EventInfo> eventList = new ArrayList<>(_eventList);
 
-		ResponseResult<List> responseResult = new ResponseResult(200,"查询成功",eventList);
+		ResponseResult<List> responseResult = new ResponseResult(200, "查询成功", eventList);
 		return responseResult;
 	}
 
 	@Override
 	public ResponseResult getAvailableEvents() {
 		List availableEventsList = eventInfoMapper.getAvailableEvents();
-		return new ResponseResult(200,"查询成功",availableEventsList);
+		return new ResponseResult(200, "查询成功", availableEventsList);
 	}
 
 	@Override
 	public ResponseResult getAvailableEventsOrganizerNameAndMemberNumsByItemId(int eventItemId) {
-		List vailableEventsOrganizerNameAndMemberNumByItemIdList = eventInfoMapper.getAvailableEventsOrganizerNameAndMemberNumsByItemId(eventItemId);
-		return new ResponseResult(200,"查询成功",vailableEventsOrganizerNameAndMemberNumByItemIdList);
+		List vailableEventsOrganizerNameAndMemberNumByItemIdList = eventInfoMapper
+				.getAvailableEventsOrganizerNameAndMemberNumsByItemId(eventItemId);
+		return new ResponseResult(200, "查询成功", vailableEventsOrganizerNameAndMemberNumByItemIdList);
 	}
 
 	@Override
 	public ResponseResult getEventInfosByUserId() {
 		long _userId = userServiceImpl.fecthUserInfoCommon().getId();
-		int userId = (int)_userId;
+		int userId = (int) _userId;
 		List eventInfoList = eventInfoMapper.getEventInfosByUserId(userId);
 		if (eventInfoList != null && !eventInfoList.isEmpty()) {
-			return new ResponseResult<List>(200,"查询成功",eventInfoList);
+			return new ResponseResult<List>(200, "查询成功", eventInfoList);
+		} else {
+			return new ResponseResult<List>(204, "未能查询到数据！");
 		}
-		else {
-			return new ResponseResult<List>(204,"未能查询到数据！");
+	}
+
+	@Override
+	public ResponseResult deleteEventInfoByEventInfoId(int eventInfoId) {
+		// TODO 自動生成されたメソッド・スタブ
+		try {
+			if (eventInfoMapper.deleteEventInfoByEventInfoId(eventInfoId) > 0) {
+				return new ResponseResult(200, "删除成功");
+			} else {
+				return new ResponseResult(404, "未找到要删除的数据！");
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("删除活动信息时出错" + "活动信息id：" + eventInfoId + "错误信息：" + e.getMessage());
+			return new ResponseResult<List>(500, e.getMessage());
+		}
+	}
+
+	@Override
+	public ResponseResult updateEventInfo(EventInfo eventInfo) {
+		// TODO 自動生成されたメソッド・スタブ
+		try {
+			if (eventInfoMapper.updateEventInfo(eventInfo) > 0) {
+				return new ResponseResult(200, "更新成功");
+			} else {
+				return new ResponseResult(404, "未找到要更新的数据！");
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("更新活动信息时出错" + "活动信息id：" + eventInfo.getEventInfoId() + "错误信息：" + e.getMessage());
+			return new ResponseResult<List>(500, e.getMessage());
 		}
 	}
 

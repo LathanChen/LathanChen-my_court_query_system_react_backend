@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.entity.CourtOpenInfo;
 import com.example.demo.entity.EventInfo;
 import com.example.demo.entity.ResponseResult;
 import com.example.demo.service.EventInfoService;
@@ -42,5 +45,17 @@ public class EventInfoController {
 	@ResponseBody
 	public ResponseResult getEventInfosByUserId() {
 		return eventInfoService.getEventInfosByUserId();
+	}
+
+	@RequestMapping(value="/deleteEventInfoByEventInfoId/{eventInfoId}",method=RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseResult deleteEventInfoByEventInfoId(@PathVariable int eventInfoId) {
+		return eventInfoService.deleteEventInfoByEventInfoId(eventInfoId);
+	}
+
+	@RequestMapping(value="/updateinfo",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseResult updateEventInfo(@RequestBody EventInfo eventInfo){
+		return eventInfoService.updateEventInfo(eventInfo);
 	}
 }
