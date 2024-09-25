@@ -58,4 +58,10 @@ public class EventInfoController {
 	public ResponseResult updateEventInfo(@RequestBody EventInfo eventInfo){
 		return eventInfoService.updateEventInfo(eventInfo);
 	}
+	
+	@RequestMapping(value="",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseResult insertEventInfo(@RequestBody EventInfo eventInfo){
+		return eventInfoService.insertEventInfo(eventInfo);
+	}
 }

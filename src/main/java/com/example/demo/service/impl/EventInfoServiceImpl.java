@@ -189,4 +189,19 @@ public class EventInfoServiceImpl implements EventInfoService {
 		}
 	}
 
+	@Override
+	public ResponseResult insertEventInfo(EventInfo eventInfo) {
+		// TODO 自動生成されたメソッド・スタブ
+		try {
+			if (eventInfoMapper.insertEventInfo(eventInfo) > 0 ) {
+				return new ResponseResult(200, "信息追加成功");
+			}
+			else {
+				return new ResponseResult(404, "未找到要更新的数据！");
+			}
+		} catch (Exception e) {
+			logger.error("追加活动信息时出错" + "活动信息id：" + eventInfo.getEventInfoId() + "错误信息：" + e.getMessage());
+			return new ResponseResult<List>(500, e.getMessage());
+		}
+	}
 }

@@ -6,6 +6,7 @@
 		<id property="eventInfoId" column="eventInfoId" />
 		<result property="eventItemId" column="eventItemId" />
 		<result property="eventCourtId" column="eventCourtId" />
+		<result property="organizerId" column="organizerId" />
 		<result property="eventOpenDay" column="eventOpenDay" />
 		<result property="eventOpenTimeZone" column="eventOpenTimeZone" />
 		<result property="eventOpenTime" column="eventOpenTime" />
@@ -193,4 +194,37 @@
 		eventInfoId
 		= #{eventInfoId}
 	</update>
+
+	<insert id="insertEventInfo"
+		parameterType="com.example.demo.entity.EventInfo">
+		INSERT INTO eventinfo
+		(
+		eventItemId,
+		eventCourtId,
+		eventOpenDay,
+		eventOpenTimeZone,
+		eventOpenTime,
+		eventUpdateTime,
+		eventNote,
+		eventEnrollment,
+		eventMaxEnrollment,
+		eventMaleCost,
+		eventFemaleCost,
+		organizerId
+		)
+		VALUES
+		(
+		#{eventItemId},
+		#{eventCourtId},
+		#{eventOpenDay},
+		#{eventOpenTimeZone},
+		#{eventOpenTime},
+		#{eventUpdateTime},
+		#{eventNote},
+		#{eventEnrollment},
+		#{eventMaxEnrollment},
+		#{eventMaleCost},
+		#{eventFemaleCost},
+		#{organizerId})
+	</insert>
 </mapper>

@@ -18,4 +18,6 @@ public interface EventInfoMapper {
 	int deleteEventInfoByEventInfoId(int eventInfoId);
 
 	int updateEventInfo(EventInfo eventInfo);
+
+	int insertEventInfo(EventInfo eventInfo);
 }

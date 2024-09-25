@@ -32,5 +32,6 @@
         <mapper resource="mapper/CourtInfoMapper.xml"  />
         <mapper resource="mapper/EventInfoMapper.xml"  />
         <mapper resource="mapper/EventEntryInfoMapper.xml"  />
+        <mapper resource="mapper/OrganizerMapper.xml"  />
   </mappers>
 </configuration>

@@ -5,5 +5,6 @@ import com.example.demo.entity.User;
 
 public interface LoginService {
 	ResponseResult login(User user);
+
 	ResponseResult logout();
 }

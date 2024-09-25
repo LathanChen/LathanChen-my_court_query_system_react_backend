@@ -69,6 +69,9 @@ public class EventInfo {
 //	活动举办组织的名称
 	private Organizer organizer;
 
+//	開催者識別番号
+	private int organizerId;
+
 //	该活动所有的报名信息
 	private List<EventEntryInfo> entryInfoList;
 }

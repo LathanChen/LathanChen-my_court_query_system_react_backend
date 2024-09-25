@@ -20,4 +20,6 @@ public interface EventInfoService {
 	ResponseResult deleteEventInfoByEventInfoId(int eventInfoId);
 
 	ResponseResult updateEventInfo(EventInfo eventInfo);
+	
+	ResponseResult insertEventInfo(EventInfo eventInfo);
 }
